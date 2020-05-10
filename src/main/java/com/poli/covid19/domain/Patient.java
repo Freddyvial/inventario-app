@@ -11,6 +11,15 @@ public class Patient {
     private DocumentType documentType;
     private Town town;
     private State state;
+    private String birthDate;
+
+    public String getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(String birthDate) {
+        this.birthDate = birthDate;
+    }
 
     public String getDocumentNumber() {
         return documentNumber;

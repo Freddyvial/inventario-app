@@ -1,30 +1,30 @@
 package com.poli.covid19.repositories.impl;
 
-import com.poli.covid19.domain.Question;
-import com.poli.covid19.repositories.QuestionRepository;
+
+import com.poli.covid19.domain.Department;
+import com.poli.covid19.repositories.DepartmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-
 import java.util.List;
 
 @Repository
-public class QuestionRepositoryImpl implements QuestionRepository {
+public class DepartmentRepositoryImpl implements DepartmentRepository {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
     @Override
-    public List<Question> getQuestion() {
+    public List<Department> getDepartment() {
         String sql = "";
 
-            sql = "select * from covid19.questions";
+            sql = "select * from covid19.departments";
 
 
-        List<Question> questions = jdbcTemplate.query(sql, new BeanPropertyRowMapper(Question.class));
-        return questions;
+        List<Department> departments = jdbcTemplate.query(sql, new BeanPropertyRowMapper(Department.class));
+        return departments;
     }
 
 

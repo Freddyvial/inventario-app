@@ -49,15 +49,15 @@ public class PatientsRepositoryImpl implements PatientRepository {
 
     private Patient update(Patient patient) {
         jdbcTemplate.update(
-                "UPDATE covid19.patients SET documentNumber = ?,fullName = ?,direction = ?,phone = ?,email = ?,idDocumentType = ?,idTown=?,idState=? WHERE id = ?",
-                patient.getDocumentNumber(),patient.getFullName(),patient.getDirection(),patient.getPhone(),patient.getEmail(),patient.getDocumentType().getId(),patient.getTown().getId(),patient.getState().getId(), patient.getId());
+                "UPDATE covid19.patients SET documentNumber = ?,fullName = ?,direction = ?,phone = ?,email = ?,idDocumentType = ?,idTown=?,idState=?,birthDate=? WHERE id = ?",
+                patient.getDocumentNumber(),patient.getFullName(),patient.getDirection(),patient.getPhone(),patient.getEmail(),patient.getDocumentType().getId(),patient.getTown().getId(),patient.getState().getId(),patient.getBirthDate(), patient.getId());
     return patient;
     }
 
 
     private Patient create(Patient patient) {
         KeyHolder holder = new GeneratedKeyHolder();
-        String sql= "INSERT INTO covid19.patients (documentNumber,fullName,direction,phone,email,idDocumentType,idTown,idState) values(?,?,?,?,?,?,?,?)";
+        String sql= "INSERT INTO covid19.patients (documentNumber,fullName,direction,phone,email,idDocumentType,idTown,idState,birthDate) values(?,?,?,?,?,?,?,?,?)";
         jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
@@ -70,6 +70,7 @@ public class PatientsRepositoryImpl implements PatientRepository {
                 ps.setString(6, patient.getDocumentType().getId());
                 ps.setString(7, patient.getTown().getId());
                 ps.setString(8, patient.getState().getId());
+                ps.setString(9, patient.getBirthDate());
 
                 return ps;
             }
