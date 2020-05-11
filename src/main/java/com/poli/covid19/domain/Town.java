@@ -2,9 +2,17 @@ package com.poli.covid19.domain;
 
 public class Town {
     private String id;
-    private  String department_id;
+    private  String idDepartment;
     private String code;
     private  String name;
+
+    public String getIdDepartment() {
+        return idDepartment;
+    }
+
+    public void setIdDepartment(String idDepartment) {
+        this.idDepartment = idDepartment;
+    }
 
     public String getId() {
         return id;
@@ -14,13 +22,6 @@ public class Town {
         this.id = id;
     }
 
-    public String getDepartment_id() {
-        return department_id;
-    }
-
-    public void setDepartment_id(String department_id) {
-        this.department_id = department_id;
-    }
 
     public String getCode() {
         return code;
