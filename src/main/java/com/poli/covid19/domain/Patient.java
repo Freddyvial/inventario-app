@@ -12,6 +12,15 @@ public class Patient {
     private Town town;
     private State state;
     private String birthDate;
+    private String idUser;
+
+    public String getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(String idUser) {
+        this.idUser = idUser;
+    }
 
     public String getBirthDate() {
         return birthDate;

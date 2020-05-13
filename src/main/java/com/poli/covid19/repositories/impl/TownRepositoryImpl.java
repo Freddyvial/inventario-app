@@ -20,7 +20,7 @@ public class TownRepositoryImpl implements TownRepository {
     public List<Town> getTownByDepartment(String id) {
         String sql = "";
 
-            sql = "select * from covid19.town where idDepartment= "+id;
+        sql = "select * from covid19.town where idDepartment= "+id;
 
 
         List<Town> towns = jdbcTemplate.query(sql, new BeanPropertyRowMapper(Town.class));

@@ -7,5 +7,5 @@ import java.util.List;
 public interface PatientsService {
 
     List<Patient> getPatients(String id);
-    Patient createPatient(Patient patient);
+    Patient createPatient(Patient patient) throws Exception;
 }

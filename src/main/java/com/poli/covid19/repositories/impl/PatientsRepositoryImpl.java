@@ -1,7 +1,11 @@
 package com.poli.covid19.repositories.impl;
 
+
 import com.poli.covid19.domain.Patient;
+import com.poli.covid19.domain.User;
 import com.poli.covid19.repositories.PatientRepository;
+import com.poli.covid19.repositories.UserRepository;
+import com.poli.covid19.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -22,6 +26,7 @@ public class PatientsRepositoryImpl implements PatientRepository {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+
     @Override
     public List<Patient> getPatients(String id) {
         String sql ="";
@@ -37,15 +42,24 @@ public class PatientsRepositoryImpl implements PatientRepository {
 
     @Override
     public Patient createPatients(Patient patient) {
+
     if(patient.getId()==null||patient.getId().equals("")){
+
         return create(patient);
 
     }else {
         return update(patient);
+    }
 
     }
 
-        }
+    @Override
+    public Patient checkPatient(String userName){
+        String sql = "select * from covid19.patients where email = ?";
+
+        List<Patient> patients = jdbcTemplate.query(sql, new Object[] { userName }, new BeanPropertyRowMapper(Patient.class));
+       return patients.size() > 0 ? patients.get(0) : null;
+    }
 
     private Patient update(Patient patient) {
         jdbcTemplate.update(
@@ -57,7 +71,7 @@ public class PatientsRepositoryImpl implements PatientRepository {
 
     private Patient create(Patient patient) {
         KeyHolder holder = new GeneratedKeyHolder();
-        String sql= "INSERT INTO covid19.patients (documentNumber,fullName,direction,phone,email,idDocumentType,idTown,idState,birthDate) values(?,?,?,?,?,?,?,?,?)";
+        String sql= "INSERT INTO covid19.patients (documentNumber,fullName,direction,phone,email,idDocumentType,idTown,idState,birthDate,idUser) values(?,?,?,?,?,?,?,?,?,?)";
         jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
@@ -68,18 +82,17 @@ public class PatientsRepositoryImpl implements PatientRepository {
                 ps.setString(4, patient.getPhone());
                 ps.setString(5, patient.getEmail());
                 ps.setString(6, patient.getDocumentType().getId());
-                ps.setString(7, patient.getTown().getId());
-                ps.setString(8, patient.getState().getId());
+                ps.setInt(7, Integer.parseInt(patient.getTown().getId()));
+                ps.setInt(8, Integer.parseInt(patient.getState().getId()));
                 ps.setString(9, patient.getBirthDate());
-
+                ps.setInt(10, Integer.parseInt(patient.getIdUser()));
                 return ps;
             }
         }, holder);
 
         Long key=holder.getKey().longValue();
-
         patient.setId(key.toString());
-
         return patient  ;
     }
+
 }

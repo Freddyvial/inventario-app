@@ -1,7 +1,9 @@
 package com.poli.covid19.services.impl;
 
 import com.poli.covid19.domain.Patient;
+import com.poli.covid19.domain.User;
 import com.poli.covid19.repositories.PatientRepository;
+import com.poli.covid19.repositories.UserRepository;
 import com.poli.covid19.services.PatientsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,8 @@ public class PatientsServiceImpl implements PatientsService {
 
     @Autowired
     private PatientRepository patientRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public List<Patient> getPatients(String id) {
@@ -22,8 +26,21 @@ public class PatientsServiceImpl implements PatientsService {
     }
 
     @Override
-    public Patient createPatient(Patient patient) {
-        return patientRepository.createPatients(patient);
+    public Patient createPatient(Patient patient) throws Exception {
+        Patient patientExist = patientRepository.checkPatient(patient.getEmail());
+
+        if(patientExist == null) {
+
+            User user = new User();
+            user.setUserName(patient.getEmail());
+            user.setPassWord(patient.getDocumentNumber());
+            user.setRole("1");
+            User newUser = userRepository.createUser(user);
+            patient.setIdUser(newUser.getId());
+            return patientRepository.createPatients(patient);
+        } else {
+          throw  new Exception("Usuario ya existe");
+        }
     }
 
 }

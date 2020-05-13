@@ -8,21 +8,21 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST})
+@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST})
 public class PatientsController {
 
-	@Autowired
-	private PatientsService patientsService;
+    @Autowired
+    private PatientsService patientsService;
 
-	@GetMapping("/patients")
-	public List<Patient> getPatients(@RequestParam(required =false) String id) {
-		System.out.println("ID: "+ id);
-		return patientsService.getPatients(id);
-	}
-	@PostMapping(path ="/patients", consumes="application/json", produces = "application/json")
-	public	Patient createPatients(@RequestBody Patient patient){
+    @GetMapping("/patients")
+    public List<Patient> getPatients(@RequestParam(required = false) String id) {
+        System.out.println("ID: " + id);
+        return patientsService.getPatients(id);
+    }
 
-		return patientsService.createPatient(patient);
-	}
+    @PostMapping(path = "/patients", consumes = "application/json", produces = "application/json")
+    public Patient createPatients(@RequestBody Patient patient) throws Exception {
+            return patientsService.createPatient(patient);
+    }
 
 }
