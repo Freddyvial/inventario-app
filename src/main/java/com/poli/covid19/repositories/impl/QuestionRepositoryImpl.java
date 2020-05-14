@@ -18,10 +18,7 @@ public class QuestionRepositoryImpl implements QuestionRepository {
 
     @Override
     public List<Question> getQuestion() {
-        String sql = "";
-
-            sql = "select * from covid19.questions";
-
+        String sql = "select * from covid19.questions";
 
         List<Question> questions = jdbcTemplate.query(sql, new BeanPropertyRowMapper(Question.class));
         return questions;

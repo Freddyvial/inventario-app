@@ -24,18 +24,11 @@ public class UserRepositoryImpl implements UserRepository {
     private JdbcTemplate jdbcTemplate;
 
     @Override
-    public List<User> getUser(String userName) {
-        String sql = "";
+    public User getUser(String userName, String password) {
+        String sql = "SELECT u.*, r.id, r.name FROM covid19.users as u inner join covid19.role as r on u.idRole = r.id  where u.userName=? and u.password = ?";
 
-            sql = "select userName from covid19.town where userName= "+userName;
-
-
-        List<User> user = jdbcTemplate.query(sql, new BeanPropertyRowMapper(User.class));
-        if (user.get(0)==null){
-            return null;
-        }else{
-            return user ;
-        }
+        List<User> users = jdbcTemplate.query(sql,new Object[] { userName ,password}, new BeanPropertyRowMapper(User.class));
+        return users.size() > 0 ? users.get(0) : null;
 
 
     }
@@ -49,7 +42,7 @@ public class UserRepositoryImpl implements UserRepository {
                 PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
                 ps.setString(1, user.getUserName());
                 ps.setString(2, user.getPassWord());
-                ps.setInt(3, Integer.parseInt(user.getRole()));
+                ps.setInt(3, Integer.parseInt(user.getRole().getId()));
                 return ps;
             }
         }, holder);

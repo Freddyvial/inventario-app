@@ -6,8 +6,7 @@ import com.poli.covid19.domain.User;
 import java.util.List;
 
 public interface UserRepository {
-
-    List <User> getUser(String userName);
+    User getUser(String userName,String password);
     User createUser(User user);
 
 }

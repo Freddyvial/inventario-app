@@ -29,11 +29,11 @@ public class PatientsRepositoryImpl implements PatientRepository {
 
     @Override
     public List<Patient> getPatients(String id) {
-        String sql ="";
-        if(id==null || id.equals("")){
+        String sql = "";
+        if (id == null || id.equals("")) {
             sql = "select * from covid19.patients";
-        }else{
-            sql = "select * from covid19.patients where id ="+ id;
+        } else {
+            sql = "select * from covid19.patients where id =" + id;
         }
 
         List<Patient> patients = jdbcTemplate.query(sql, new BeanPropertyRowMapper(Patient.class));
@@ -43,35 +43,35 @@ public class PatientsRepositoryImpl implements PatientRepository {
     @Override
     public Patient createPatients(Patient patient) {
 
-    if(patient.getId()==null||patient.getId().equals("")){
+        if (patient.getId() == null || patient.getId().equals("")) {
 
-        return create(patient);
+            return create(patient);
 
-    }else {
-        return update(patient);
-    }
+        } else {
+            return update(patient);
+        }
 
     }
 
     @Override
-    public Patient checkPatient(String userName){
+    public Patient checkPatient(String userName) {
         String sql = "select * from covid19.patients where email = ?";
 
-        List<Patient> patients = jdbcTemplate.query(sql, new Object[] { userName }, new BeanPropertyRowMapper(Patient.class));
-       return patients.size() > 0 ? patients.get(0) : null;
+        List<Patient> patients = jdbcTemplate.query(sql, new Object[]{userName}, new BeanPropertyRowMapper(Patient.class));
+        return patients.size() > 0 ? patients.get(0) : null;
     }
 
     private Patient update(Patient patient) {
         jdbcTemplate.update(
                 "UPDATE covid19.patients SET documentNumber = ?,fullName = ?,direction = ?,phone = ?,email = ?,idDocumentType = ?,idTown=?,idState=?,birthDate=? WHERE id = ?",
-                patient.getDocumentNumber(),patient.getFullName(),patient.getDirection(),patient.getPhone(),patient.getEmail(),patient.getDocumentType().getId(),patient.getTown().getId(),patient.getState().getId(),patient.getBirthDate(), patient.getId());
-    return patient;
+                patient.getDocumentNumber(), patient.getFullName(), patient.getDirection(), patient.getPhone(), patient.getEmail(), patient.getDocumentType().getId(), patient.getTown().getId(), patient.getState().getId(), patient.getBirthDate(), patient.getId());
+        return patient;
     }
 
 
     private Patient create(Patient patient) {
         KeyHolder holder = new GeneratedKeyHolder();
-        String sql= "INSERT INTO covid19.patients (documentNumber,fullName,direction,phone,email,idDocumentType,idTown,idState,birthDate,idUser) values(?,?,?,?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO covid19.patients (documentNumber,fullName,direction,phone,email,idDocumentType,idTown,idState,birthDate,idUser) values(?,?,?,?,?,?,?,?,?,?)";
         jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
@@ -90,9 +90,9 @@ public class PatientsRepositoryImpl implements PatientRepository {
             }
         }, holder);
 
-        Long key=holder.getKey().longValue();
+        Long key = holder.getKey().longValue();
         patient.setId(key.toString());
-        return patient  ;
+        return patient;
     }
 
 }

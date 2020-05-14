@@ -28,12 +28,15 @@ public class TracingRepositoryImpl implements TracingRepository {
         String sql ="";
         if(id==null || id.equals("")){
             sql = "select * from covid19.tracing";
+            List<Tracing> tracings = jdbcTemplate.query(sql, new BeanPropertyRowMapper(Tracing.class));
+            return tracings;
         }else{
-            sql = "select * from covid19.tracing where id ="+ id;
+            sql = "select * from covid19.tracing where id = ?";
+            List<Tracing> tracings = jdbcTemplate.query(sql,new Object[] { id }, new BeanPropertyRowMapper(Tracing.class));
+            return tracings;
         }
 
-        List<Tracing> tracings = jdbcTemplate.query(sql, new BeanPropertyRowMapper(Tracing.class));
-        return tracings;
+
     }
 
     @Override

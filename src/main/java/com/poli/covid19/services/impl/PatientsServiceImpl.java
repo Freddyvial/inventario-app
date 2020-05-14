@@ -1,6 +1,7 @@
 package com.poli.covid19.services.impl;
 
 import com.poli.covid19.domain.Patient;
+import com.poli.covid19.domain.Role;
 import com.poli.covid19.domain.User;
 import com.poli.covid19.repositories.PatientRepository;
 import com.poli.covid19.repositories.UserRepository;
@@ -32,9 +33,11 @@ public class PatientsServiceImpl implements PatientsService {
         if(patientExist == null) {
 
             User user = new User();
+            Role role= new Role();
+            role.setId("1");
             user.setUserName(patient.getEmail());
             user.setPassWord(patient.getDocumentNumber());
-            user.setRole("1");
+            user.setRole(role);
             User newUser = userRepository.createUser(user);
             patient.setIdUser(newUser.getId());
             return patientRepository.createPatients(patient);

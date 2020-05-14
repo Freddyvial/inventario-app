@@ -29,10 +29,10 @@ public class MedicalRepositoryImpl implements MedicalRepository {
         if(id==null || id.equals("")){
             sql = "select * from covid19.medical";
         }else{
-            sql = "select * from covid19.medical where id ="+ id;
+            sql = "select * from covid19.medical where id = ?";
         }
 
-        List<Medical> medicals = jdbcTemplate.query(sql, new BeanPropertyRowMapper(Medical.class));
+        List<Medical> medicals = jdbcTemplate.query(sql,new Object[]{id}, new BeanPropertyRowMapper(Medical.class));
         return medicals;
     }
 
