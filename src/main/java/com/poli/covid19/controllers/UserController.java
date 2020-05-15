@@ -19,8 +19,8 @@ public class UserController {
 		private UserService userService;
 
 	@GetMapping("/consultUser")
-	public User getUser(String userName,String password) {
-		return userService.getUser(userName, password);
+	public List<User> consultUser(String userName,String password) {
+		return userService.consultUser(userName, password);
 	}
 
 
