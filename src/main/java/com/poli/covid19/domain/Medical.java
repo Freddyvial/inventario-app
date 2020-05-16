@@ -2,9 +2,35 @@ package com.poli.covid19.domain;
 
 public class Medical {
     private String id;
+    private DocumentType documentType;
+    private String numberDocument;
     private String fullName;
-    private Specialty specialty;
     private String email;
+    private String phone;
+
+    public DocumentType getDocumentType() {
+        return documentType;
+    }
+
+    public void setDocumentType(DocumentType documentType) {
+        this.documentType = documentType;
+    }
+
+    public String getNumberDocument() {
+        return numberDocument;
+    }
+
+    public void setNumberDocument(String numberDocument) {
+        this.numberDocument = numberDocument;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
     public String getId() {
         return id;
@@ -22,13 +48,6 @@ public class Medical {
         this.fullName = fullName;
     }
 
-    public Specialty getSpecialty() {
-        return specialty;
-    }
-
-    public void setSpecialty(Specialty specialty) {
-        this.specialty = specialty;
-    }
 
     public String getEmail() {
         return email;

@@ -1,5 +1,6 @@
 package com.poli.covid19.repositories.impl;
 
+import com.poli.covid19.domain.DocumentType;
 import com.poli.covid19.domain.Medical;
 import com.poli.covid19.repositories.MedicalRepository;
 
@@ -15,7 +16,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class MedicalRepositoryImpl implements MedicalRepository {
@@ -24,58 +27,69 @@ public class MedicalRepositoryImpl implements MedicalRepository {
     private JdbcTemplate jdbcTemplate;
 
     @Override
-    public List<Medical> getMedical(String id) {
-        String sql ="";
-        if(id==null || id.equals("")){
-            sql = "select * from covid19.medical";
-        }else{
-            sql = "select * from covid19.medical where id = ?";
+    public List<Medical> getMedical() {
+        String sql = "select m.*,d.value from covid19.medical as m\n" +
+                "inner join covid19.documenttype as d\n" +
+                "on m.idDocumentType=d.id";
+        List<Medical> medicals = new ArrayList<>();
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+        for (Map row : rows) {
+            Medical newMedical = new Medical();
+            newMedical.setId(String.format(row.get("id").toString()));
+            newMedical.setNumberDocument((String) row.get("numberDocument"));
+            newMedical.setFullName((String) row.get("fullName"));
+            newMedical.setEmail((String) row.get("email"));
+            newMedical.setPhone((String) row.get("phone"));
+            DocumentType documentType = new DocumentType();
+            documentType.setId(String.format(row.get("idDocumentType").toString()));
+            documentType.setValue((String) row.get("value"));
+            newMedical.setDocumentType(documentType);
+            medicals.add(newMedical);
         }
-
-        List<Medical> medicals = jdbcTemplate.query(sql,new Object[]{id}, new BeanPropertyRowMapper(Medical.class));
         return medicals;
     }
 
     @Override
     public Medical createMedical(Medical medical) {
-    if(medical.getId()==null||medical.getId().equals("")){
-        return create(medical);
+        if (medical.getId() == null || medical.getId().equals("")) {
+            return create(medical);
 
-    }else {
-        return update(medical);
-
-    }
+        } else {
+            return update(medical);
 
         }
 
+    }
+
     private Medical update(Medical medical) {
         jdbcTemplate.update(
-                "UPDATE covid19.medical SET fullName = ?,idSpecialty = ?,email = ? WHERE id = ?",
-                medical.getFullName(),medical.getSpecialty().getId(),medical.getEmail(), medical.getId());
-    return medical;
+                "UPDATE covid19.medical SET fullName = ?,numberDocument = ?,email = ?, phone = ?, idDocumentType=?  WHERE id = ?",
+                medical.getFullName(), medical.getNumberDocument(), medical.getEmail(), medical.getPhone(), medical.getDocumentType().getId(),medical.getId());
+        return medical;
     }
 
 
     private Medical create(Medical medical) {
         KeyHolder holder = new GeneratedKeyHolder();
-        String sql= "INSERT INTO covid19.medical (fullName,idSpecialty,email) values(?,?,?)";
+        String sql = "INSERT INTO covid19.medical (fullName,numberDocument,email,phone,idDocumentType) values(?,?,?,?,?)";
         jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
                 PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
                 ps.setString(1, medical.getFullName());
-                ps.setString(2, medical.getSpecialty().getId());
+                ps.setString(2, medical.getNumberDocument());
                 ps.setString(3, medical.getEmail());
-
+                ps.setString(4, medical.getPhone());
+                ps.setString(5, medical.getDocumentType().getId());
 
                 return ps;
             }
         }, holder);
 
-        Long key=holder.getKey().longValue();
+        Long key = holder.getKey().longValue();
 
         medical.setId(key.toString());
 
-        return medical  ;
+        return medical;
     }
 }

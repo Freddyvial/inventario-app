@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface MedicalRepository {
 
-    List<Medical> getMedical(String id);
+    List<Medical> getMedical();
     Medical createMedical(Medical medical);
 }

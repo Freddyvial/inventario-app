@@ -19,7 +19,7 @@ public class UserController {
 		private UserService userService;
 
 	@GetMapping("/consultUser")
-	public List<User> consultUser(String userName,String password) {
+	public User consultUser(String userName,String password) {
 		return userService.consultUser(userName, password);
 	}
 

@@ -27,7 +27,7 @@ public class UserRepositoryImpl implements UserRepository {
     private JdbcTemplate jdbcTemplate;
 
     @Override
-    public List<User> consultUser(String userName, String password){
+    public User consultUser(String userName, String password){
         String sql = "SELECT u.*, r.name as roleName FROM covid19.users as u inner join covid19.role as r on u.idRole = r.id where u.userName=? and u.password = ?";
         List<User> users=new ArrayList<>();
         List<Map<String, Object>> rows= jdbcTemplate.queryForList(sql ,new Object[] { userName ,password});
@@ -42,7 +42,7 @@ public class UserRepositoryImpl implements UserRepository {
             newUser.setRole(role);
             users.add(newUser);
         }
-        return users;
+         return users.get(0);
     }
     public User createUser(User user) {
         KeyHolder holder = new GeneratedKeyHolder();

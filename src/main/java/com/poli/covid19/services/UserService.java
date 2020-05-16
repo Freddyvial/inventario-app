@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface UserService {
 
-    List <User> consultUser(String userName, String password);
+    User consultUser(String userName, String password);
     User setUser(User user);
 
 }

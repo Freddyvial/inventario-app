@@ -17,9 +17,9 @@ public class MedicalServiceImpl implements MedicalService {
     private com.poli.covid19.repositories.MedicalRepository MedicalRepository;
 
     @Override
-    public List<Medical> getMedical(String id) {
+    public List<Medical> getMedical() {
 
-        return MedicalRepository.getMedical(id);
+        return MedicalRepository.getMedical();
     }
 
     @Override

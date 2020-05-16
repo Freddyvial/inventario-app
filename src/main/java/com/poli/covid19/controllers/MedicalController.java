@@ -15,9 +15,8 @@ public class MedicalController {
 	private MedicalService medicalService;
 
 	@GetMapping("/medical")
-	public List<Medical> getMedical(@RequestParam(required =false) String id) {
-		System.out.println("ID: "+ id);
-		return medicalService.getMedical(id);
+	public List<Medical> getMedical() {
+		return medicalService.getMedical();
 	}
 	@PostMapping(path ="/medical", consumes="application/json", produces = "application/json")
 	public	Medical createMedical(@RequestBody Medical medical){
