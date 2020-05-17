@@ -39,10 +39,11 @@ public class PatientsServiceImpl implements PatientsService {
             user.setPassWord(patient.getDocumentNumber());
             user.setRole(role);
             User newUser = userRepository.createUser(user);
-            patient.setIdUser(newUser.getId());
+            patient.setUser(newUser);
             return patientRepository.createPatients(patient);
         } else {
-          throw  new Exception("Usuario ya existe");
+          return  patientRepository.update(patient);
+
         }
     }
 

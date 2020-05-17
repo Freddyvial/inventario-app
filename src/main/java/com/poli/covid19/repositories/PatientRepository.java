@@ -10,5 +10,6 @@ public interface PatientRepository {
     List<Patient> getPatients(String id);
     Patient createPatients(Patient patient);
     Patient checkPatient(String userName);
+    Patient update(Patient patient);
 
 }

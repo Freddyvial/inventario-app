@@ -9,5 +9,5 @@ import java.util.List;
 public interface MedicalService {
 
     List<Medical> getMedical();
-    Medical createMedical(Medical medical);
+    Medical createMedical (Medical medical) throws Exception;
 }

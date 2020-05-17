@@ -19,7 +19,7 @@ public class MedicalController {
 		return medicalService.getMedical();
 	}
 	@PostMapping(path ="/medical", consumes="application/json", produces = "application/json")
-	public	Medical createMedical(@RequestBody Medical medical){
+	public	Medical createMedical(@RequestBody Medical medical) throws Exception {
 
 		return medicalService.createMedical(medical);
 	}

@@ -12,14 +12,14 @@ public class Patient {
     private Town town;
     private State state;
     private String birthDate;
-    private String idUser;
+    private User user;
 
-    public String getIdUser() {
-        return idUser;
+    public User getUser() {
+        return user;
     }
 
-    public void setIdUser(String idUser) {
-        this.idUser = idUser;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getBirthDate() {

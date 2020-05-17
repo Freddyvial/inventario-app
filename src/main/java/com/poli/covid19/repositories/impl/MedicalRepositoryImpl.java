@@ -2,6 +2,7 @@ package com.poli.covid19.repositories.impl;
 
 import com.poli.covid19.domain.DocumentType;
 import com.poli.covid19.domain.Medical;
+import com.poli.covid19.domain.Patient;
 import com.poli.covid19.repositories.MedicalRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,15 @@ public class MedicalRepositoryImpl implements MedicalRepository {
     private JdbcTemplate jdbcTemplate;
 
     @Override
+    public Medical checkMedical(String userName) {
+        String sql = "select * from covid19.medical where email = ?";
+
+        List<Medical> medicals = jdbcTemplate.query(sql, new Object[]{userName}, new BeanPropertyRowMapper(Medical.class));
+        return medicals.size() > 0 ? medicals.get(0) : null;
+    }
+
+
+    @Override
     public List<Medical> getMedical() {
         String sql = "select m.*,d.value from covid19.medical as m\n" +
                 "inner join covid19.documenttype as d\n" +
@@ -44,6 +54,7 @@ public class MedicalRepositoryImpl implements MedicalRepository {
             documentType.setId(String.format(row.get("idDocumentType").toString()));
             documentType.setValue((String) row.get("value"));
             newMedical.setDocumentType(documentType);
+            newMedical.setState((String) row.get("state"));
             medicals.add(newMedical);
         }
         return medicals;
@@ -60,18 +71,18 @@ public class MedicalRepositoryImpl implements MedicalRepository {
         }
 
     }
-
-    private Medical update(Medical medical) {
+    @Override
+    public Medical update(Medical medical) {
         jdbcTemplate.update(
-                "UPDATE covid19.medical SET fullName = ?,numberDocument = ?,email = ?, phone = ?, idDocumentType=?  WHERE id = ?",
-                medical.getFullName(), medical.getNumberDocument(), medical.getEmail(), medical.getPhone(), medical.getDocumentType().getId(),medical.getId());
+                "UPDATE covid19.medical SET fullName = ?,numberDocument = ?,email = ?, phone = ?, idDocumentType=?, state=?  WHERE id = ?",
+                medical.getFullName(), medical.getNumberDocument(), medical.getEmail(), medical.getPhone(), medical.getDocumentType().getId(),medical.getState(),medical.getId());
         return medical;
     }
 
 
     private Medical create(Medical medical) {
         KeyHolder holder = new GeneratedKeyHolder();
-        String sql = "INSERT INTO covid19.medical (fullName,numberDocument,email,phone,idDocumentType) values(?,?,?,?,?)";
+        String sql = "INSERT INTO covid19.medical (fullName,numberDocument,email,phone,idDocumentType,state,idUser) values(?,?,?,?,?,?,?)";
         jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
@@ -81,7 +92,8 @@ public class MedicalRepositoryImpl implements MedicalRepository {
                 ps.setString(3, medical.getEmail());
                 ps.setString(4, medical.getPhone());
                 ps.setString(5, medical.getDocumentType().getId());
-
+                ps.setString(6, medical.getState());
+                ps.setInt(7, Integer.parseInt(medical.getUser().getId()));
                 return ps;
             }
         }, holder);

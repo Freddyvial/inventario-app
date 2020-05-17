@@ -60,8 +60,8 @@ public class PatientsRepositoryImpl implements PatientRepository {
         List<Patient> patients = jdbcTemplate.query(sql, new Object[]{userName}, new BeanPropertyRowMapper(Patient.class));
         return patients.size() > 0 ? patients.get(0) : null;
     }
-
-    private Patient update(Patient patient) {
+    @Override
+    public Patient update(Patient patient) {
         jdbcTemplate.update(
                 "UPDATE covid19.patients SET documentNumber = ?,fullName = ?,direction = ?,phone = ?,email = ?,idDocumentType = ?,idTown=?,idState=?,birthDate=? WHERE id = ?",
                 patient.getDocumentNumber(), patient.getFullName(), patient.getDirection(), patient.getPhone(), patient.getEmail(), patient.getDocumentType().getId(), patient.getTown().getId(), patient.getState().getId(), patient.getBirthDate(), patient.getId());
@@ -81,11 +81,11 @@ public class PatientsRepositoryImpl implements PatientRepository {
                 ps.setString(3, patient.getDirection());
                 ps.setString(4, patient.getPhone());
                 ps.setString(5, patient.getEmail());
-                ps.setString(6, patient.getDocumentType().getId());
+                ps.setInt(6, Integer.parseInt(patient.getDocumentType().getId()));
                 ps.setInt(7, Integer.parseInt(patient.getTown().getId()));
                 ps.setInt(8, Integer.parseInt(patient.getState().getId()));
                 ps.setString(9, patient.getBirthDate());
-                ps.setInt(10, Integer.parseInt(patient.getIdUser()));
+                ps.setInt(10, Integer.parseInt(patient.getUser().getId()));
                 return ps;
             }
         }, holder);
