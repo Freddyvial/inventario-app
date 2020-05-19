@@ -15,9 +15,9 @@ public class TracingServiceImpl implements TracingService {
     private TracingRepository tracingRepository;
 
     @Override
-    public List<Tracing> getTracing(String id) {
+    public List<Tracing> consultTracing() {
 
-        return tracingRepository.getTracing(id);
+        return tracingRepository.consultTracing();
     }
 
     @Override

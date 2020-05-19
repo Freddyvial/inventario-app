@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface TracingRepository {
 
-    List<Tracing> getTracing(String id);
+    List<Tracing> consultTracing();
     Tracing createTracing(Tracing tracing);
 }

@@ -6,6 +6,24 @@ public class Tracing {
     private Medical medical;
     private String observation;
     private State state;
+    private String date;
+    private DetailTracing detailTracing;
+
+    public DetailTracing getDetailTracing() {
+        return detailTracing;
+    }
+
+    public void setDetailTracing(DetailTracing detailTracing) {
+        this.detailTracing = detailTracing;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
 
     public String getId() {
         return id;

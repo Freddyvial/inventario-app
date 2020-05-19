@@ -13,6 +13,15 @@ public class Patient {
     private State state;
     private String birthDate;
     private User user;
+    private  String changeDate;
+
+    public String getChangeDate() {
+        return changeDate;
+    }
+
+    public void setChangeDate(String changeDate) {
+        this.changeDate = changeDate;
+    }
 
     public User getUser() {
         return user;

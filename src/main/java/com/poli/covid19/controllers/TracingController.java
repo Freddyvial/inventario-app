@@ -15,9 +15,8 @@ public class TracingController {
 	private TracingService tracingService;
 
 	@GetMapping("/tracing")
-	public List<Tracing> getTracing(@RequestParam(required =false) String id) {
-		System.out.println("ID: "+ id);
-		return tracingService.getTracing(id);
+	public List<Tracing> consultTracing() {
+		return tracingService.consultTracing();
 	}
 	@PostMapping(path ="/tracing", consumes="application/json", produces = "application/json")
 	public	Tracing createTracing(@RequestBody Tracing tracing){
