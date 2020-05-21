@@ -26,23 +26,42 @@ public class TracingRepositoryImpl implements TracingRepository {
     private JdbcTemplate jdbcTemplate;
 
     @Override
-    public List<Tracing> consultTracing() {
+    public List<DetailTracing> consultDetailTracing(String id){
+        String sql="SELECT * FROM covid19.detailtracing WHERE idTracing = ?";
+
+        List<DetailTracing> detailTracings = jdbcTemplate.query(sql,new Object[] { id }, new BeanPropertyRowMapper(DetailTracing.class));
+        return detailTracings;
+
+    }
+
+    @Override
+    public List<Tracing> consultTracing(String id) {
         String sql ="SELECT t.id as idTracing, t.date as dateTracing,t.idPatient, t.idMedical, t.observations as observationsTracing,t.idState as idStateTracing,\n" +
                 "p.documentNumber as documentNumberPatient,p.fullName as fullNamePatient, p.direction as directionPatient, p.phone as phonePatient,\n" +
                 "p.email as emailPatient, p.idDocumentType as idDocumentTypePatient, p.idTown as idTownPatient, p.idState as idStatePatient, \n" +
                 "p.changeDate as changeDatePatient, p.birthDate as birthDatePatient, p.idUser as idUserPatient,\n" +
                 "m.fullName as fullNameMedical, m.numberDocument as numberDocumentMedical, m.email as emailMedical, m.phone as phoneMedical,\n" +
                 "m.idDocumentType as idDocumentTypeMedical, m.state as stateMedical, m.idUser as idUserMedical,\n" +
-                "s.value as valuePatient,\n" +
-                "d.id as idDetailTracing, d.date as dateDetailTracing, d.checkObservation as checkObservationDetail, d.medication as medicationDetailTracing,\n" +
-                "d.evolutionPatient as evolutionPatientDetail\n" +
+                "st.value as nameStateTracing,\n" +
+                "tn.idDepartment,tn.name as nameTown,\n" +
+                "dp.name as nameDepartment,\n" +
+                "ap.id as idResult, ap.result as resultTest,\n" +
+                "dtp.value as nameDocumentTypePatient,\n" +
+                "dtm.value as nameDocumentTypeMedical,\n" +
+                "sp.value as nameStatePatient\n" +
                 "FROM covid19.tracing as t\n" +
-                "inner join covid19.patients as p on t.idPatient = p.id\n" +
-                "inner join covid19.medical as m on t.idMedical = m.id\n" +
-                "inner join covid19.state as s on t.idState = s.id\n" +
-                "inner join covid19.detailtracing as d on t.id = d.idTracing;";
+                "left join covid19.patients as p on t.idPatient = p.id\n" +
+                "left join covid19.medical as m on t.idMedical = m.id\n" +
+                "left join covid19.state as st on t.idState = st.id\n" +
+                "inner join covid19.town as tn on p.idTown = tn.id\n" +
+                "inner join covid19.departments as dp on tn.idDepartment= dp.id\n" +
+                "inner join covid19.answerspatients as ap on p.id = ap.idPatient\n" +
+                "inner join covid19.documenttype as dtp on p.idDocumentType = dtp.id\n" +
+                "inner join covid19.documenttype as dtm on m.idDocumentType = dtm.id\n" +
+                "inner join covid19.state as sp on p.idState = sp.id\n" +
+                "where t.idMedical=?";
                 List<Tracing> tracings =new ArrayList<>();
-                List<Map<String,Object>> rows = jdbcTemplate.queryForList(sql);
+                List<Map<String,Object>> rows = jdbcTemplate.queryForList(sql,new Object[] { id });
                 for (Map row : rows){
                     Tracing newTracing =new Tracing();
                     newTracing.setId((String.format(row.get("idTracing").toString())));
@@ -56,18 +75,29 @@ public class TracingRepositoryImpl implements TracingRepository {
                     patient.setEmail((String) row.get("emailPatient"));
                     DocumentType documentType= new DocumentType();
                     documentType.setId(String.format(row.get("idDocumentTypePatient").toString()));
+                    documentType.setValue((String) row.get("nameDocumentTypePatient"));
                     patient.setDocumentType(documentType);
                     Town town=new Town();
                     town.setId(String.format(row.get("idTownPatient").toString()));
+                    town.setIdDepartment(String.format(row.get("idDepartment").toString()));
+                    town.setName((String) row.get("nameTown"));
                     patient.setTown(town);
+                    Department department =new Department();
+                    department.setName((String) row.get("nameDepartment"));
+                    patient.setDepartment(department);
                     State statePatient= new State();
                     statePatient.setId(String.format(row.get("idStatePatient").toString()));
+                    statePatient.setValue((String) row.get("nameStatePatient"));
                     patient.setState(statePatient);
                     patient.setChangeDate(String.format(row.get("changeDatePatient").toString()));
                     patient.setBirthDate((String) row.get("birthDatePatient"));
                     User userPatient = new User();
                     userPatient.setId(String.format(row.get("idUserPatient").toString()));
                     patient.setUser(userPatient);
+                    AnswerPatient answerPatient = new AnswerPatient();
+                    answerPatient.setId(String.format(row.get("idResult").toString()));
+                    answerPatient.setResult(String.format(row.get("resultTest").toString()));
+                    patient.setAnswerPatient(answerPatient);
                     newTracing.setPatient(patient);
                     Medical medical = new Medical();
                     medical.setId(String.format(row.get("idMedical").toString()));
@@ -77,6 +107,7 @@ public class TracingRepositoryImpl implements TracingRepository {
                     medical.setPhone((String) row.get("phoneMedical"));
                     DocumentType documentTypeMedical =new DocumentType();
                     documentTypeMedical.setId((String.format(row.get("idDocumentTypeMedical").toString())));
+                    documentTypeMedical.setValue((String) row.get("nameDocumentTypeMedical"));
                     medical.setDocumentType(documentTypeMedical);
                     medical.setState((String) row.get("stateMedical"));
                     User userMedical =new User();
@@ -85,16 +116,8 @@ public class TracingRepositoryImpl implements TracingRepository {
                     newTracing.setMedical(medical);
                     State stateTracing=new State();
                     stateTracing.setId(String.format(row.get("idStateTracing").toString()));
-                    stateTracing.setValue((String) row.get("valuePatient"));
+                    stateTracing.setValue((String) row.get("nameStateTracing"));
                     newTracing.setState(stateTracing);
-                    DetailTracing detailTracing = new DetailTracing();
-                    detailTracing.setId(String.format(row.get("idDetailTracing").toString()));
-                    detailTracing.setDate(String.format(row.get("dateDetailTracing").toString()));
-                    detailTracing.setCheckObservation((String) row.get("checkObservationDetail"));
-                    detailTracing.setMedication((String) row.get("medicationDetailTracing"));
-                    detailTracing.setEvolutionPatient((String) row.get("evolutionPatientDetail"));
-                    detailTracing.setTracing(String.format(row.get("idTracing").toString()));
-                    newTracing.setDetailTracing(detailTracing);
                     newTracing.setObservation((String)row.get("observationsTracing"));
                     tracings.add(newTracing);
                 }
@@ -103,7 +126,27 @@ public class TracingRepositoryImpl implements TracingRepository {
 
 
     }
+    @Override
+    public DetailTracing createDetailTracing(DetailTracing detailTracing){
+        KeyHolder holder = new GeneratedKeyHolder();
+        String sql = "INSERT INTO covid19.detailtracing (checkObservation,medication,evolutionPatient, idTracing) values(?,?,?,?)";
+        jdbcTemplate.update(new PreparedStatementCreator() {
+            @Override
+            public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+                PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                ps.setString(1, detailTracing.getCheckObservation());
+                ps.setString(2, detailTracing.getMedication());
+                ps.setString(3, detailTracing.getEvolutionPatient());
+                ps.setString(4, detailTracing.getIdTracing());
+                return ps;
+            }
+        }, holder);
 
+        Long key = holder.getKey().longValue();
+
+        detailTracing.setId(key.toString());
+        return detailTracing;
+    }
     @Override
     public Tracing createTracing(Tracing tracing) {
     if(tracing.getId()==null|| tracing.getId().equals("")){

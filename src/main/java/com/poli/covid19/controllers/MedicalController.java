@@ -18,6 +18,10 @@ public class MedicalController {
 	public List<Medical> getMedical() {
 		return medicalService.getMedical();
 	}
+	@GetMapping("/checkMedical")
+	public Medical checkMedical(String userName) {
+		return medicalService.checkMedical(userName);
+	}
 	@PostMapping(path ="/medical", consumes="application/json", produces = "application/json")
 	public	Medical createMedical(@RequestBody Medical medical) throws Exception {
 

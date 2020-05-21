@@ -10,4 +10,5 @@ public interface MedicalService {
 
     List<Medical> getMedical();
     Medical createMedical (Medical medical) throws Exception;
+    Medical checkMedical(String userName);
 }

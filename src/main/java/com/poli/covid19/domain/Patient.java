@@ -10,10 +10,28 @@ public class Patient {
     private String email;
     private DocumentType documentType;
     private Town town;
+    private Department department;
     private State state;
     private String birthDate;
     private User user;
     private  String changeDate;
+    private AnswerPatient answerPatient;
+
+    public AnswerPatient getAnswerPatient() {
+        return answerPatient;
+    }
+
+    public void setAnswerPatient(AnswerPatient answerPatient) {
+        this.answerPatient = answerPatient;
+    }
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
 
     public String getChangeDate() {
         return changeDate;

@@ -5,8 +5,16 @@ public class DetailTracing {
     private String checkObservation;
     private String medication;
     private String evolutionPatient;
-    private String tracing;
     private String date;
+    private  String idTracing;
+
+    public String getIdTracing() {
+        return idTracing;
+    }
+
+    public void setIdTracing(String idTracing) {
+        this.idTracing = idTracing;
+    }
 
     public String getDate() {
         return date;
@@ -48,11 +56,5 @@ public class DetailTracing {
         this.evolutionPatient = evolutionPatient;
     }
 
-    public String getTracing() {
-        return tracing;
-    }
 
-    public void setTracing(String tracing) {
-        this.tracing = tracing;
-    }
 }

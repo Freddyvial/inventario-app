@@ -50,4 +50,9 @@ public class MedicalServiceImpl implements MedicalService {
 
     }
 
+    @Override
+    public Medical checkMedical(String userName) {
+        return medicalRepository.checkMedical(userName);
+    }
+
 }

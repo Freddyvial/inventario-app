@@ -42,7 +42,7 @@ public class UserRepositoryImpl implements UserRepository {
             newUser.setRole(role);
             users.add(newUser);
         }
-         return users.get(0);
+         return users.size()>0 ? users.get(0):null;
     }
     public User createUser(User user) {
         KeyHolder holder = new GeneratedKeyHolder();

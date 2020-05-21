@@ -1,5 +1,6 @@
 package com.poli.covid19.services.impl;
 
+import com.poli.covid19.domain.DetailTracing;
 import com.poli.covid19.domain.Tracing;
 import com.poli.covid19.repositories.TracingRepository;
 import com.poli.covid19.services.TracingService;
@@ -15,9 +16,17 @@ public class TracingServiceImpl implements TracingService {
     private TracingRepository tracingRepository;
 
     @Override
-    public List<Tracing> consultTracing() {
+    public List<DetailTracing> consultDetailTracing(String id) {
+        return tracingRepository.consultDetailTracing(id);
+    }
+    @Override
+    public DetailTracing createDetailTracing(DetailTracing detailTracing){
+        return tracingRepository.createDetailTracing(detailTracing);
+    }
+    @Override
+    public List<Tracing> consultTracing(String id) {
 
-        return tracingRepository.consultTracing();
+        return tracingRepository.consultTracing(id);
     }
 
     @Override
