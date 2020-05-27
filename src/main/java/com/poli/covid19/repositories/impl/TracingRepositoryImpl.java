@@ -39,13 +39,12 @@ public class TracingRepositoryImpl implements TracingRepository {
         String sql ="SELECT t.id as idTracing, t.date as dateTracing,t.idPatient, t.idMedical, t.observations as observationsTracing,t.idState as idStateTracing,\n" +
                 "p.documentNumber as documentNumberPatient,p.fullName as fullNamePatient, p.direction as directionPatient, p.phone as phonePatient,\n" +
                 "p.email as emailPatient, p.idDocumentType as idDocumentTypePatient, p.idTown as idTownPatient, p.idState as idStatePatient, \n" +
-                "p.changeDate as changeDatePatient, p.birthDate as birthDatePatient, p.idUser as idUserPatient,\n" +
+                "p.changeDate as changeDatePatient, p.birthDate as birthDatePatient, p.idUser as idUserPatient,p.result,\n" +
                 "m.fullName as fullNameMedical, m.numberDocument as numberDocumentMedical, m.email as emailMedical, m.phone as phoneMedical,\n" +
                 "m.idDocumentType as idDocumentTypeMedical, m.state as stateMedical, m.idUser as idUserMedical,\n" +
                 "st.value as nameStateTracing,\n" +
                 "tn.idDepartment,tn.name as nameTown,\n" +
                 "dp.name as nameDepartment,\n" +
-                "ap.id as idResult, ap.result as resultTest,\n" +
                 "dtp.value as nameDocumentTypePatient,\n" +
                 "dtm.value as nameDocumentTypeMedical,\n" +
                 "sp.value as nameStatePatient\n" +
@@ -55,7 +54,6 @@ public class TracingRepositoryImpl implements TracingRepository {
                 "left join covid19.state as st on t.idState = st.id\n" +
                 "inner join covid19.town as tn on p.idTown = tn.id\n" +
                 "inner join covid19.departments as dp on tn.idDepartment= dp.id\n" +
-                "inner join covid19.answerspatients as ap on p.id = ap.idPatient\n" +
                 "inner join covid19.documenttype as dtp on p.idDocumentType = dtp.id\n" +
                 "inner join covid19.documenttype as dtm on m.idDocumentType = dtm.id\n" +
                 "inner join covid19.state as sp on p.idState = sp.id\n" +
@@ -94,10 +92,6 @@ public class TracingRepositoryImpl implements TracingRepository {
                     User userPatient = new User();
                     userPatient.setId(String.format(row.get("idUserPatient").toString()));
                     patient.setUser(userPatient);
-                    AnswerPatient answerPatient = new AnswerPatient();
-                    answerPatient.setId(String.format(row.get("idResult").toString()));
-                    answerPatient.setResult(String.format(row.get("resultTest").toString()));
-                    patient.setAnswerPatient(answerPatient);
                     newTracing.setPatient(patient);
                     Medical medical = new Medical();
                     medical.setId(String.format(row.get("idMedical").toString()));

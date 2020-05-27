@@ -15,14 +15,14 @@ public class Patient {
     private String birthDate;
     private User user;
     private  String changeDate;
-    private AnswerPatient answerPatient;
+    private String result;
 
-    public AnswerPatient getAnswerPatient() {
-        return answerPatient;
+    public String getResult() {
+        return result;
     }
 
-    public void setAnswerPatient(AnswerPatient answerPatient) {
-        this.answerPatient = answerPatient;
+    public void setResult(String result) {
+        this.result = result;
     }
 
     public Department getDepartment() {
