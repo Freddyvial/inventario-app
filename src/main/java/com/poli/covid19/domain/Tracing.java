@@ -4,7 +4,6 @@ public class Tracing {
     private String id;
     private Patient patient;
     private Medical medical;
-    private String observation;
     private State state;
     private String date;
     private DetailTracing detailTracing;
@@ -49,13 +48,6 @@ public class Tracing {
         this.medical = medical;
     }
 
-    public String getObservation() {
-        return observation;
-    }
-
-    public void setObservation(String observation) {
-        this.observation = observation;
-    }
 
     public State getState() {
         return state;

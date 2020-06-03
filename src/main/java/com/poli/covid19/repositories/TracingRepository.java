@@ -11,4 +11,5 @@ public interface TracingRepository {
     List<Tracing> consultTracing(String id);
     Tracing createTracing(Tracing tracing);
     DetailTracing createDetailTracing(DetailTracing detailTracing);
+    int idMedicalByTracing();
 }

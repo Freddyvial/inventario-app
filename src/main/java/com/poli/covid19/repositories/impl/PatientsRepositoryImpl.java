@@ -71,7 +71,7 @@ public class PatientsRepositoryImpl implements PatientRepository {
 
     private Patient create(Patient patient) {
         KeyHolder holder = new GeneratedKeyHolder();
-        String sql = "INSERT INTO covid19.patients (documentNumber,fullName,direction,phone,email,idDocumentType,idTown,idState,birthDate,idUser,result) values(?,?,?,?,?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO covid19.patients (documentNumber,fullName,direction,phone,email,idDocumentType,idTown,idState,birthDate,idUser,result,latitude,longitude) values(?,?,?,?,?,?,?,?,?,?,?,?,?)";
         jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
@@ -87,6 +87,8 @@ public class PatientsRepositoryImpl implements PatientRepository {
                 ps.setString(9, patient.getBirthDate());
                 ps.setInt(10, Integer.parseInt(patient.getUser().getId()));
                 ps.setString(11,patient.getResult());
+                ps.setString(12,patient.getLatitude());
+                ps.setString(13,patient.getLongitude());
                 return ps;
             }
         }, holder);
