@@ -53,7 +53,7 @@ public class PatientsServiceImpl implements PatientsService {
             tracingRepository.createTracing(tracing);
             return patient1;
         } else {
-          return  patientRepository.update(patient);
+          throw  new Exception("Usuario ya existe");
 
         }
     }

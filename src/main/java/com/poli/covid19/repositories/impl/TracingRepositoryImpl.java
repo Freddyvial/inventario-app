@@ -77,7 +77,7 @@ public class TracingRepositoryImpl implements TracingRepository {
                 "inner join covid19.documenttype as dtp on p.idDocumentType = dtp.id\n" +
                 "inner join covid19.documenttype as dtm on m.idDocumentType = dtm.id\n" +
                 "inner join covid19.state as sp on p.idState = sp.id\n" +
-                "where t.idMedical=?";
+                "where t.idMedical=? and t.idState = 4 ";
         List<Tracing> tracings = new ArrayList<>();
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql, new Object[]{id});
         for (Map row : rows) {
@@ -176,7 +176,7 @@ public class TracingRepositoryImpl implements TracingRepository {
     private Tracing update(Tracing tracing) {
         jdbcTemplate.update(
                 "UPDATE covid19.tracing SET idPatient = ?,idMedical = ?,idState = ? WHERE id = ?",
-                tracing.getPatient(), tracing.getMedical(), tracing.getState());
+                tracing.getPatient().getId(), tracing.getMedical().getId(), tracing.getState().getId(), tracing.getId());
         return tracing;
     }
 

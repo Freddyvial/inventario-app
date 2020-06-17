@@ -23,15 +23,20 @@ public class TracingController {
 		return tracingService.consultDetailTracing(id);
 	}
 
+
 	@GetMapping("/tracing")
 	public List<Tracing> consultTracing(String id) {
+
 		return tracingService.consultTracing(id);
 	}
+
+
 	@PostMapping(path ="/tracing", consumes="application/json", produces = "application/json")
 	public	Tracing createTracing(@RequestBody Tracing tracing){
 
 		return tracingService.createTracing(tracing);
 	}
+
 	@PostMapping(path ="/createDetailTracing", consumes="application/json", produces = "application/json")
 	public	DetailTracing createDetailTracing(@RequestBody DetailTracing detailTracing){
 
