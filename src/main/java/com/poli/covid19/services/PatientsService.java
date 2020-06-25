@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface PatientsService {
 
-    List<Patient> getPatients(String id);
+    List<Patient> getPatients();
     Patient createPatient(Patient patient) throws Exception;
 }

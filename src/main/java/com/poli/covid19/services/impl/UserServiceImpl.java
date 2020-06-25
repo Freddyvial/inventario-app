@@ -24,6 +24,11 @@ public class UserServiceImpl implements UserService {
     public User setUser(User user) {
         return userRepository.createUser(user);
     }
+    @Override
+    public User upDatePassword(User user) {
+        return userRepository.upDatePassword(user);
+    }
+
 
 
 }

@@ -7,23 +7,23 @@ public class Medical {
     private String fullName;
     private String email;
     private String phone;
-    private String state;
+    private State state;
     private User user;
 
     public User getUser() {
         return user;
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getState() {
+    public State getState() {
         return state;
     }
 
-    public void setState(String state) {
+    public void setState(State state) {
         this.state = state;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public DocumentType getDocumentType() {

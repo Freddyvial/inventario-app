@@ -21,9 +21,9 @@ public class PatientsServiceImpl implements PatientsService {
     @Autowired
     private TracingRepository tracingRepository;
     @Override
-    public List<Patient> getPatients(String id) {
+    public List<Patient> getPatients() {
 
-        return patientRepository.getPatients(id);
+        return patientRepository.getPatients();
     }
 
     @Override

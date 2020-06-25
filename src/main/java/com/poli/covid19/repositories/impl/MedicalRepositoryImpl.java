@@ -1,8 +1,6 @@
 package com.poli.covid19.repositories.impl;
 
-import com.poli.covid19.domain.DocumentType;
-import com.poli.covid19.domain.Medical;
-import com.poli.covid19.domain.Patient;
+import com.poli.covid19.domain.*;
 import com.poli.covid19.repositories.MedicalRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,9 +36,12 @@ public class MedicalRepositoryImpl implements MedicalRepository {
 
     @Override
     public List<Medical> getMedical() {
-        String sql = "select m.*,d.value from covid19.medical as m\n" +
-                "inner join covid19.documenttype as d\n" +
-                "on m.idDocumentType=d.id";
+        String sql = "select m.*,dt.value as nameDocumentType,s.value as nameState,\n" +
+                "u.userName,u.idRole,r.name as nameRole from covid19.medical as m\n" +
+                "inner join covid19.documenttype as dt on m.idDocumentType=dt.id\n" +
+                "inner join covid19.state as s on m.idState = s.id\n" +
+                "inner join covid19.users as u on m.idUser=u.id\n" +
+                "inner join covid19.role as r on u.idRole=r.id";
         List<Medical> medicals = new ArrayList<>();
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
         for (Map row : rows) {
@@ -52,9 +53,20 @@ public class MedicalRepositoryImpl implements MedicalRepository {
             newMedical.setPhone((String) row.get("phone"));
             DocumentType documentType = new DocumentType();
             documentType.setId(String.format(row.get("idDocumentType").toString()));
-            documentType.setValue((String) row.get("value"));
+            documentType.setValue((String) row.get("nameDocumentType"));
             newMedical.setDocumentType(documentType);
-            newMedical.setState((String) row.get("state"));
+            State stateMedical =new State();
+            stateMedical.setId(String.format(row.get("idState").toString()));
+            stateMedical.setValue((String) row.get("nameState"));
+            newMedical.setState(stateMedical);
+            User userMedical = new User();
+            userMedical.setId(String.format(row.get("idUser").toString()));
+            userMedical.setUserName((String) row.get("userName"));
+            Role roleUser = new Role();
+            roleUser.setId(String.format(row.get("idRole").toString()));
+            roleUser.setName((String) row.get("nameRole"));
+            userMedical.setRole(roleUser);
+            newMedical.setUser(userMedical);
             medicals.add(newMedical);
         }
         return medicals;
@@ -92,7 +104,7 @@ public class MedicalRepositoryImpl implements MedicalRepository {
                 ps.setString(3, medical.getEmail());
                 ps.setString(4, medical.getPhone());
                 ps.setString(5, medical.getDocumentType().getId());
-                ps.setString(6, medical.getState());
+                ps.setString(6, medical.getState().getId());
                 ps.setInt(7, Integer.parseInt(medical.getUser().getId()));
                 return ps;
             }

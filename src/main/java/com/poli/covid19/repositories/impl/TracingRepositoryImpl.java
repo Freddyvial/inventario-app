@@ -61,7 +61,7 @@ public class TracingRepositoryImpl implements TracingRepository {
                 "p.email as emailPatient, p.idDocumentType as idDocumentTypePatient, p.idTown as idTownPatient, p.idState as idStatePatient, \n" +
                 "p.changeDate as changeDatePatient, p.birthDate as birthDatePatient, p.idUser as idUserPatient,p.result,\n" +
                 "m.fullName as fullNameMedical, m.numberDocument as numberDocumentMedical, m.email as emailMedical, m.phone as phoneMedical,\n" +
-                "m.idDocumentType as idDocumentTypeMedical, m.state as stateMedical, m.idUser as idUserMedical,\n" +
+                "m.idDocumentType as idDocumentTypeMedical, m.idState as stateMedical, m.idUser as idUserMedical,\n" +
                 "st.value as nameStateTracing,\n" +
                 "tn.idDepartment,tn.name as nameTown,\n" +
                 "dp.name as nameDepartment,\n" +
@@ -123,7 +123,9 @@ public class TracingRepositoryImpl implements TracingRepository {
             documentTypeMedical.setId((String.format(row.get("idDocumentTypeMedical").toString())));
             documentTypeMedical.setValue((String) row.get("nameDocumentTypeMedical"));
             medical.setDocumentType(documentTypeMedical);
-            medical.setState((String) row.get("stateMedical"));
+            State stateMedical =new State();
+            stateMedical.setId(String.format(row.get("idStateTracing").toString()));
+            medical.setState(stateMedical);
             User userMedical = new User();
             userMedical.setId(String.format(row.get("idUserMedical").toString()));
             medical.setUser(userMedical);

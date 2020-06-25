@@ -1,6 +1,7 @@
 package com.poli.covid19.repositories.impl;
 
 
+
 import com.poli.covid19.domain.Role;
 import com.poli.covid19.domain.User;
 import com.poli.covid19.repositories.UserRepository;
@@ -25,7 +26,13 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
-
+    @Override
+    public User upDatePassword(User user) {
+        jdbcTemplate.update(
+                "UPDATE covid19.users SET password = ? WHERE id = ?",
+                user.getPassWord(), user.getId());
+        return user;
+    }
     @Override
     public User consultUser(String userName, String password){
         String sql = "SELECT u.*, r.name as roleName FROM covid19.users as u inner join covid19.role as r on u.idRole = r.id where u.userName=? and u.password = ?";

@@ -15,9 +15,8 @@ public class PatientsController {
     private PatientsService patientsService;
 
     @GetMapping("/patients")
-    public List<Patient> getPatients(@RequestParam(required = false) String id) {
-        System.out.println("ID: " + id);
-        return patientsService.getPatients(id);
+    public List<Patient> getPatients() {
+        return patientsService.getPatients();
     }
 
     @PostMapping(path = "/patients", consumes = "application/json", produces = "application/json")

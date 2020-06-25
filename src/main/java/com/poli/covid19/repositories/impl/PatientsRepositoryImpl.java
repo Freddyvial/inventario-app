@@ -1,8 +1,7 @@
 package com.poli.covid19.repositories.impl;
 
 
-import com.poli.covid19.domain.Patient;
-import com.poli.covid19.domain.User;
+import com.poli.covid19.domain.*;
 import com.poli.covid19.repositories.PatientRepository;
 import com.poli.covid19.repositories.UserRepository;
 import com.poli.covid19.services.UserService;
@@ -18,7 +17,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class PatientsRepositoryImpl implements PatientRepository {
@@ -28,15 +29,59 @@ public class PatientsRepositoryImpl implements PatientRepository {
 
 
     @Override
-    public List<Patient> getPatients(String id) {
-        String sql = "";
-        if (id == null || id.equals("")) {
-            sql = "select * from covid19.patients";
-        } else {
-            sql = "select * from covid19.patients where id =" + id;
+    public List<Patient> getPatients() {
+        String sql = "select p.*,dt.value as nameDocumentType,t.name as nameTown,t.idDepartment,d.name as nameDepartment,\n" +
+                "s.value as nameState,u.userName,u.idRole,r.name as nameRole from covid19.patients as p\n" +
+                "inner join covid19.documenttype as dt on p.idDocumentType=dt.id\n" +
+                "inner join covid19.town as t on p.idTown= t.id\n" +
+                "inner join covid19.departments as d on t.idDepartment=d.id\n" +
+                "inner join covid19.state as s on p.idState = s.id\n" +
+                "inner join covid19.users as u on p.idUser=u.id\n" +
+                "inner join covid19.role as r on u.idRole=r.id";
+        List<Patient> patients = new ArrayList<>();
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+        for (Map row : rows) {
+            Patient newPatient=new Patient();
+            newPatient.setId(String.format(row.get("id").toString()));
+            newPatient.setDocumentNumber((String) row.get("documentNumber"));
+            newPatient.setFullName((String) row.get("fullName"));
+            newPatient.setDirection((String) row.get("direction"));
+            newPatient.setPhone((String) row.get("phone"));
+            newPatient.setEmail((String) row.get("email"));
+            DocumentType documentType = new DocumentType();
+            documentType.setId(String.format(row.get("idDocumentType").toString()));
+            documentType.setValue((String) row.get("nameDocumentType"));
+            newPatient.setDocumentType(documentType);
+            Town town = new Town();
+            town.setId(String.format(row.get("idTown").toString()));
+            town.setIdDepartment(String.format(row.get("idDepartment").toString()));
+            town.setName((String) row.get("nameTown"));
+            newPatient.setTown(town);
+            Department department = new Department();
+            department.setId(String.format(row.get("idDepartment").toString()));
+            department.setName((String) row.get("nameDepartment"));
+            newPatient.setDepartment(department);
+            State statePatient = new State();
+            statePatient.setId(String.format(row.get("idState").toString()));
+            statePatient.setValue((String) row.get("nameState"));
+            newPatient.setState(statePatient);
+            newPatient.setChangeDate(String.format(row.get("changeDate").toString()));
+            newPatient.setBirthDate((String) row.get("birthDate"));
+            User userPatient = new User();
+            userPatient.setId(String.format(row.get("idUser").toString()));
+            userPatient.setUserName((String) row.get("userName"));
+            Role roleUser=new Role();
+            roleUser.setId(String.format(row.get("idRole").toString()));
+            roleUser.setName((String) row.get("nameRole"));
+            userPatient.setRole(roleUser);
+            newPatient.setUser(userPatient);
+            newPatient.setLatitude((String)row.get("latitude"));
+            newPatient.setLatitude((String)row.get("longitude"));
+            newPatient.setResult((String) row.get("result"));
+
+            patients.add(newPatient);
         }
 
-        List<Patient> patients = jdbcTemplate.query(sql, new BeanPropertyRowMapper(Patient.class));
         return patients;
     }
 

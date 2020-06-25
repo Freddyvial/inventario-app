@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface PatientRepository {
 
-    List<Patient> getPatients(String id);
+    List<Patient> getPatients();
     Patient createPatients(Patient patient);
     Patient checkPatient(String userName);
     Patient update(Patient patient);

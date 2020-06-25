@@ -17,7 +17,7 @@ public class DepartmentController {
 
 
 	@Autowired
-		private DepartmentService departmentService;
+	private DepartmentService departmentService;
 
 	@GetMapping("/department")
 	public List<Department> getDepartment() {
