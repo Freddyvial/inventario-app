@@ -41,7 +41,7 @@ public class MedicalServiceImpl implements MedicalService {
             medical.setUser(newUser);
             return medicalRepository.createMedical(medical);
         }else {
-            throw  new Exception("Usuario ya existe");
+            return medicalRepository.update(medical);
 
 
 

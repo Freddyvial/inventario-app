@@ -86,8 +86,8 @@ public class MedicalRepositoryImpl implements MedicalRepository {
     @Override
     public Medical update(Medical medical) {
         jdbcTemplate.update(
-                "UPDATE covid19.medical SET fullName = ?,numberDocument = ?,email = ?, phone = ?, idDocumentType=?, state=?  WHERE id = ?",
-                medical.getFullName(), medical.getNumberDocument(), medical.getEmail(), medical.getPhone(), medical.getDocumentType().getId(),medical.getState(),medical.getId());
+                "UPDATE covid19.medical SET fullName = ?,numberDocument = ?,email = ?, phone = ?, idDocumentType=?, idState=?  WHERE id = ?",
+                medical.getFullName(), medical.getNumberDocument(), medical.getEmail(), medical.getPhone(), medical.getDocumentType().getId(),medical.getState().getId(),medical.getId());
         return medical;
     }
 

@@ -51,7 +51,7 @@ public class ChartRepositoryImpl implements ChartRepository {
     public List<ChartResultByBirthDate> consultResultByBirthDate() {
         String sql = "SELECT TIMESTAMPDIFF (YEAR, p.birthDate, CURDATE()) as age, count( p.birthDate) AS quantity\n" +
                 "FROM covid19.patients as p\n" +
-                "group by age;";
+                "group by age";
         List<ChartResultByBirthDate> chartResultByBirthDates = jdbcTemplate.query(sql, new BeanPropertyRowMapper(ChartResultByBirthDate.class));
         return chartResultByBirthDates;
     }
