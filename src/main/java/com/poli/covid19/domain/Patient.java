@@ -14,10 +14,10 @@ public class Patient {
     private State state;
     private String birthDate;
     private User user;
-    private  String changeDate;
+    private String changeDate;
     private String result;
-    private  String latitude;
-    private  String longitude;
+    private String latitude;
+    private String longitude;
 
     public String getLatitude() {
         return latitude;
