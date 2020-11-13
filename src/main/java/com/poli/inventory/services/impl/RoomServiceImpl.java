@@ -1,31 +1,37 @@
 package com.poli.inventory.services.impl;
 
-import com.poli.inventory.domain.Article;
-import com.poli.inventory.repositories.ArticleRepository;
-import com.poli.inventory.services.ArticleService;
+
+import com.poli.inventory.domain.Room;
+import com.poli.inventory.repositories.RoomRepository;
+import com.poli.inventory.services.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
-public class ArticleServiceImpl implements ArticleService {
+public class RoomServiceImpl implements RoomService {
     @Autowired
-    private ArticleRepository articleRepository;
+    private RoomRepository roomRepository;
 
     @Override
-    public List<Article> getArticle() {
-        return articleRepository.getArticles();
+    public List<Room> getRooms(String idCampus) {
+        return roomRepository.consulRooms(idCampus);
     }
 
     @Override
-    public Article createArticle(Article article) throws Exception {
-        Article articleExist = articleRepository.checkArticle(article.getSerial());
-
-        if(articleExist == null) {
-            return articleRepository.createArticle(article);
+    public Room createRoom(Room room) throws Exception {
+        if (room.getIdRoom() == 0) {
+            return roomRepository.createRoom(room);
         } else {
-            return  null;
+            Room roomExist = roomRepository.checkRoom(room.getName());
 
+            if (roomExist != null) {
+                return roomRepository.createRoom(room);
+            } else {
+                return null;
+
+            }
         }
     }
 }

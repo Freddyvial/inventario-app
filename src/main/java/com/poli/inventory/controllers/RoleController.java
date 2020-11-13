@@ -1,7 +1,8 @@
-package com.poli.covid19.controllers;
+package com.poli.inventory.controllers;
 
-import com.poli.covid19.domain.Role;
-import com.poli.covid19.services.RoleService;
+
+import com.poli.inventory.domain.Role;
+import com.poli.inventory.services.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;

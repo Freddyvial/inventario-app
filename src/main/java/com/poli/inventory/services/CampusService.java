@@ -3,12 +3,13 @@ package com.poli.inventory.services;
 
 
 
-import com.poli.inventory.domain.Role;
+
+import com.poli.inventory.domain.Campus;
 
 import java.util.List;
 
-public interface RoleService {
+public interface CampusService {
 
-    List<Role> consultRole();
+    List<Campus> consultCampus();
 
 }

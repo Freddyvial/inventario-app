@@ -1,8 +1,7 @@
 package com.poli.inventory.controllers;
 
-import com.poli.inventory.domain.Article;
-import com.poli.inventory.domain.User;
-import com.poli.inventory.services.ArticleService;
+import com.poli.inventory.domain.Room;
+import com.poli.inventory.services.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,20 +9,20 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST})
-public class ArticleController {
+public class RoomController {
 
     @Autowired
-    private ArticleService articleService;
+    private RoomService roomService;
 
-    @GetMapping("/articles")
-    public List<Article> getArticles(){
-        return articleService.getArticle();
+    @GetMapping("/rooms")
+    public List<Room> getArticles(String idCampus){
+        return roomService.getRooms(idCampus);
     }
 
-    @PostMapping(path = "/articles", consumes = "application/json", produces = "application/json")
-    public Article setArticles(@RequestBody Article article) throws Exception {
+    @PostMapping(path = "/rooms", consumes = "application/json", produces = "application/json")
+    public Room setRooms(@RequestBody Room room) throws Exception {
 
-        return articleService.createArticle(article);
+        return roomService.createRoom(room);
 
     }
 }

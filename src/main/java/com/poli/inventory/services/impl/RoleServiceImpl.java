@@ -1,8 +1,9 @@
-package com.poli.covid19.services.impl;
+package com.poli.inventory.services.impl;
 
-import com.poli.covid19.domain.Role;
-import com.poli.covid19.repositories.RoleRepository;
-import com.poli.covid19.services.RoleService;
+
+import com.poli.inventory.domain.Role;
+import com.poli.inventory.repositories.RoleRepository;
+import com.poli.inventory.services.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

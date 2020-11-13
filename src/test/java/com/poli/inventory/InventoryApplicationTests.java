@@ -1,10 +1,10 @@
-package com.poli.covid19;
+package com.poli.inventory;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class Covid19ApplicationTests {
+class InventoryApplicationTests {
 
 	@Test
 	void contextLoads() {

@@ -1,8 +1,10 @@
 package com.poli.inventory.repositories.impl;
 
-import com.poli.inventory.domain.Article;
-import com.poli.inventory.domain.State;
-import com.poli.inventory.repositories.ArticleRepository;
+
+
+import com.poli.inventory.domain.Campus;
+import com.poli.inventory.domain.Room;
+import com.poli.inventory.repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -22,79 +24,79 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
-public class ArticleRepositoryImpl implements ArticleRepository {
+public class RoomRepositoryImpl implements RoomRepository {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
     @Override
-    public List<Article> getArticles() {
-        String sql = "SELECT a.*, s.name AS nameState FROM articles AS a\n" +
-                "INNER JOIN state AS s ON a.idState = s.idState";
-        List<Article> articles = new ArrayList<>();
-        List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+    public List<Room> consulRooms(String idCampus) {
+        String sql = "SELECT * FROM roominventory.rooms WHERE idRoom != 0 AND idCampus=?";
+        List<Room> rooms = new ArrayList<>();
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql,idCampus);
         for (Map row : rows) {
-            Article newArticle = new Article();
-            newArticle.setId((Integer) row.get("idArticle"));
-            newArticle.setName((String) row.get("name"));
-            newArticle.setSerial((String) row.get("serial"));
-            State state = new State();
-            state.setId((Integer) row.get("idState"));
-            state.setName((String) row.get("nameState"));
-            newArticle.setState(state);
-            newArticle.setPhoto((byte[]) row.get("photo"));
-            articles.add(newArticle);
+            Room newRoom = new Room();
+            newRoom.setIdRoom((Integer) row.get("idRoom"));
+            newRoom.setName((String) row.get("name"));
+            newRoom.setResponsible((String) row.get("responsible"));
+            newRoom.setPhoto((byte[]) row.get("photo"));
+            Campus campus=new Campus();
+            campus.setIdCampus((Integer) row.get("idCampus"));
+            campus.setName((String) row.get("nameCampus"));
+            campus.setDirection((String) row.get("direction"));
+            newRoom.setCampus(campus);
+            rooms.add(newRoom);
         }
-        return articles;
+        return rooms;
     }
 
     @Override
-    public Article createArticle(Article article) {
+    public Room createRoom(Room room) {
 
-        if (String.valueOf(article.getId()).equals("")||String.valueOf(article.getId()).equals("0")) {
+        if (String.valueOf(room.getIdRoom()).equals("")||String.valueOf(room.getIdRoom()).equals("0")) {
 
-            return create(article);
+            return create(room);
 
         } else {
-            return update(article);
+            return update(room);
         }
     }
 
-    private Article create(Article article) {
+    private Room create(Room room) {
         KeyHolder holder = new GeneratedKeyHolder();
-        String sql = "INSERT INTO roominventory.articles (name, serial, idState,photo) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO roominventory.rooms (name, responsible,photo,idCampus) VALUES (?, ?, ?,?)";
         jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
                 PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-                ps.setString(1, article.getName());
-                ps.setString(2, article.getSerial());
-                ps.setInt(3, article.getState().getId());
-                ps.setBinaryStream(4, getInputStreamImage(article.getPhoto()));
+                ps.setString(1, room.getName());
+                ps.setString(2, room.getResponsible());
+                ps.setBinaryStream(3, getInputStreamImage(room.getPhoto()));
+                ps.setInt(4,room.getCampus().getIdCampus());
                 return ps;
             }
         }, holder);
 
         Long key = holder.getKey().longValue();
-        article.setId(key.intValue());
-        return article;
+        room.setIdRoom(key.intValue());
+        return room;
     }
     private InputStream getInputStreamImage(byte[] image) {
         return new ByteArrayInputStream(image);
     }
 
     @Override
-    public Article checkArticle(String serial) {
-        String sql = "select * from roominventory.articles where serial = ?";
+    public Room checkRoom(String name) {
+        String sql = "select * from roominventory.rooms where name = ?";
 
-        List<Article> articles = jdbcTemplate.query(sql, new Object[]{serial}, new BeanPropertyRowMapper(Article.class));
-        return articles.size() > 0 ? articles.get(0) : null;
+        List<Room> rooms = jdbcTemplate.query(sql, new Object[]{name}, new BeanPropertyRowMapper(Room.class));
+        return rooms.size() > 0 ? rooms.get(0) : null;
     }
 
     @Override
-    public Article update(Article article) {
+    public Room update(Room room) {
         jdbcTemplate.update(
-                "UPDATE articles SET name=?, serial=?, idState=?, photo=? WHERE idArticle=?",
-                article.getName(),article.getSerial(),article.getState().getId(),article.getPhoto(),article.getId());
-        return article;
+                "UPDATE rooms SET name=?, responsible=?, photo=? WHERE idRoom=?",
+                room.getName(),room.getResponsible(),room.getPhoto(),room.getIdRoom());
+        return room;
     }
 }

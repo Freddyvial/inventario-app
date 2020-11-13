@@ -1,8 +1,9 @@
-package com.poli.covid19.services;
+package com.poli.inventory.services;
 
 
 
-import com.poli.covid19.domain.Role;
+
+import com.poli.inventory.domain.Role;
 
 import java.util.List;
 

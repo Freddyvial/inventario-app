@@ -2,12 +2,14 @@ package com.poli.inventory.repositories;
 
 
 
-import com.poli.inventory.domain.Role;
+
+
+import com.poli.inventory.domain.Campus;
 
 import java.util.List;
 
-public interface RoleRepository {
+public interface CampusRepository {
 
-    List<Role> consultRole();
+    List<Campus> consultCampus();
 
 }

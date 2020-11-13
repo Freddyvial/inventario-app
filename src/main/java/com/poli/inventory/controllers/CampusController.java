@@ -1,8 +1,8 @@
 package com.poli.inventory.controllers;
 
 
-import com.poli.inventory.domain.Role;
-import com.poli.inventory.services.RoleService;
+import com.poli.inventory.domain.Campus;
+import com.poli.inventory.services.CampusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,15 +13,15 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST})
-public class RoleController {
+public class CampusController {
 
 	@Autowired
-		private RoleService roleService;
+		private CampusService campusService;
 
-	@GetMapping("/role")
-	public List<Role> getDepartment() {
+	@GetMapping("/campus")
+	public List<Campus> getCampus() {
 
-		return roleService.consultRole();
+		return campusService.consultCampus();
 	}
 
 

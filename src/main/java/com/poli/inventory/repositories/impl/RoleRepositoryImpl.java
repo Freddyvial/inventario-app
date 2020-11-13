@@ -1,7 +1,7 @@
-package com.poli.covid19.repositories.impl;
+package com.poli.inventory.repositories.impl;
 
-import com.poli.covid19.domain.Role;
-import com.poli.covid19.repositories.RoleRepository;
+import com.poli.inventory.domain.Role;
+import com.poli.inventory.repositories.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -17,7 +17,7 @@ public class RoleRepositoryImpl implements RoleRepository {
 
     @Override
     public List<Role> consultRole() {
-        String sql = "select * from covid19.role";
+        String sql = "select * from roominventory.role";
         List<Role> roles = jdbcTemplate.query(sql, new BeanPropertyRowMapper(Role.class));
         return roles;
     }

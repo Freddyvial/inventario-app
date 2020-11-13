@@ -1,11 +1,11 @@
 package com.poli.inventory.services;
 
-import com.poli.inventory.domain.Article;
+import com.poli.inventory.domain.Room;
 
 import java.util.List;
 
-public interface ArticleService {
+public interface RoomService {
 
-    List<Article> getArticle();
-    Article createArticle(Article article) throws Exception;
+    List<Room> getRooms(String idCampus);
+    Room createRoom(Room room) throws Exception;
 }

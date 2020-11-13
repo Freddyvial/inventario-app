@@ -1,6 +1,8 @@
-package com.poli.covid19.repositories;
+package com.poli.inventory.repositories;
 
-import com.poli.covid19.domain.Role;
+
+
+import com.poli.inventory.domain.Role;
 
 import java.util.List;
 

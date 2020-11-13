@@ -34,16 +34,16 @@ public class UserRepositoryImpl implements UserRepository {
     }
     @Override
     public User consultUser(String userName, String password){
-        String sql = "SELECT u.*, r.name as roleName FROM roominventory.users as u inner join roominventory.role as r on u.idRole = r.id where u.userName=? and u.password = ?";
+        String sql = "SELECT u.*, r.name as roleName FROM roominventory.users as u inner join roominventory.role as r on u.idRole = r.idRole where u.userName=? and u.password = ?";
         List<User> users=new ArrayList<>();
         List<Map<String, Object>> rows= jdbcTemplate.queryForList(sql ,new Object[] { userName ,password});
         for(Map row:rows){
             User newUser = new User();
-            newUser.setId((int)row.get("id"));
+            newUser.setId((int)row.get("idRole"));
             newUser.setUserName((String) row.get("userName"));
             newUser.setPassWord((String) row.get("password"));
             Role role=new Role();
-            role.setId((String.format(row.get("idRole").toString())));
+            role.setIdRole((String.format(row.get("idRole").toString())));
             role.setName((String) row.get("roleName"));
             newUser.setRole(role);
             users.add(newUser);
@@ -59,7 +59,7 @@ public class UserRepositoryImpl implements UserRepository {
                 PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
                 ps.setString(1, user.getUserName());
                 ps.setString(2, user.getPassWord());
-                ps.setInt(3, Integer.parseInt(user.getRole().getId()));
+                ps.setInt(3, Integer.parseInt(user.getRole().getIdRole()));
                 return ps;
             }
         }, holder);

@@ -1,14 +1,14 @@
 package com.poli.inventory.repositories;
 
-import com.poli.inventory.domain.Article;
+import com.poli.inventory.domain.Room;
 
 import java.util.List;
 
-public interface ArticleRepository {
+public interface RoomRepository {
 
-    List<Article> getArticles();
-    Article createArticle(Article article);
-    Article checkArticle(String serial);
-    Article update(Article article);
+    List<Room> consulRooms(String idCampus);
+    Room createRoom(Room room);
+    Room checkRoom(String name);
+    Room update(Room room);
 
 }

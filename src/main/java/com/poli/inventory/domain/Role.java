@@ -1,15 +1,15 @@
 package com.poli.inventory.domain;
 
 public class Role {
-    private String id;
+    private String idRole;
     private String name;
 
-    public String getId() {
-        return id;
+    public String getIdRole() {
+        return idRole;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setIdRole(String idRole) {
+        this.idRole = idRole;
     }
 
     public String getName() {
