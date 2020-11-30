@@ -2,6 +2,7 @@ package com.poli.inventory.repositories.impl;
 
 
 
+import com.poli.inventory.domain.Campus;
 import com.poli.inventory.domain.Role;
 import com.poli.inventory.domain.User;
 import com.poli.inventory.repositories.UserRepository;
@@ -41,11 +42,14 @@ public class UserRepositoryImpl implements UserRepository {
             User newUser = new User();
             newUser.setId((int)row.get("idRole"));
             newUser.setUserName((String) row.get("userName"));
-            newUser.setPassWord((String) row.get("password"));
+
             Role role=new Role();
             role.setIdRole((String.format(row.get("idRole").toString())));
             role.setName((String) row.get("roleName"));
             newUser.setRole(role);
+            Campus campus= new Campus();
+            campus.setIdCampus((int) row.get("idCampus"));
+            newUser.setCampus(campus);
             users.add(newUser);
         }
          return users.size()>0 ? users.get(0):null;

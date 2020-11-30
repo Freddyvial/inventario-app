@@ -11,5 +11,5 @@ import java.util.List;
 public interface CampusService {
 
     List<Campus> consultCampus();
-
+    Campus createCampus(Campus campus) throws Exception;
 }

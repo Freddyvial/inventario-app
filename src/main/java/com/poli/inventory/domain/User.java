@@ -5,6 +5,7 @@ public class User {
     private String userName;
     private String passWord;
     private Role role;
+    private Campus campus;
 
     public int getId() {
         return id;
@@ -36,5 +37,13 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public Campus getCampus() {
+        return campus;
+    }
+
+    public void setCampus(Campus campus) {
+        this.campus = campus;
     }
 }

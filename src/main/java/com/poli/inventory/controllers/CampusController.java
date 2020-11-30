@@ -2,12 +2,10 @@ package com.poli.inventory.controllers;
 
 
 import com.poli.inventory.domain.Campus;
+import com.poli.inventory.domain.Room;
 import com.poli.inventory.services.CampusService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,6 +20,12 @@ public class CampusController {
 	public List<Campus> getCampus() {
 
 		return campusService.consultCampus();
+	}
+	@PostMapping(path = "/campus", consumes = "application/json", produces = "application/json")
+	public Campus sendCampus(@RequestBody Campus campus) throws Exception {
+
+		return campusService.createCampus(campus);
+
 	}
 
 
