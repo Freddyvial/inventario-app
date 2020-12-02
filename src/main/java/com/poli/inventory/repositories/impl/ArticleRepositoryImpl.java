@@ -1,9 +1,6 @@
 package com.poli.inventory.repositories.impl;
 
-import com.poli.inventory.domain.Article;
-import com.poli.inventory.domain.Room;
-import com.poli.inventory.domain.State;
-import com.poli.inventory.domain.TypeArticle;
+import com.poli.inventory.domain.*;
 import com.poli.inventory.repositories.ArticleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -30,7 +27,7 @@ public class ArticleRepositoryImpl implements ArticleRepository {
 
     @Override
     public List<Article> getArticles(String idCampus) {
-        String sql = "SELECT a.*,r.name as nameRoom,r.responsible,s.name as nameState,t.name as nameTypeArticle FROM roominventory.articles as a \n" +
+        String sql = "SELECT a.*,r.name as nameRoom,r.idUser,s.name as nameState,t.name as nameTypeArticle FROM roominventory.articles as a \n" +
                 "INNER JOIN state as s on a.idState=s.idState\n" +
                 "INNER JOIN typearticle as t on a.idTypeArticle= t.idTypeArticle \n" +
                 "INNER JOIN rooms as r on a.idRoom=r.idRoom\n" +
@@ -50,7 +47,9 @@ public class ArticleRepositoryImpl implements ArticleRepository {
             Room newRoom= new Room();
             newRoom.setIdRoom((Integer) row.get("idRoom"));
             newRoom.setName((String) row.get("nameRoom"));
-            newRoom.setResponsible((String) row.get("responsible"));
+            User user = new User();
+            user.setId((int) row.get("idUser"));
+            newRoom.setUser(user);
             newArticle.setRoom(newRoom);
             TypeArticle newTypeArticle=new TypeArticle();
             newTypeArticle.setIdTypeArticle((Integer) row.get("idTypeArticle"));
@@ -76,7 +75,7 @@ public class ArticleRepositoryImpl implements ArticleRepository {
     }
     @Override
     public List<Article> consulArticleByRoom(Integer idRoom) {
-        String sql = "SELECT a.*,r.name as nameRoom,r.responsible ,s.name as nameState,t.name as nameTypeArticle FROM roominventory.articles as a \n" +
+        String sql = "SELECT a.*,r.name as nameRoom,r.idUser ,s.name as nameState,t.name as nameTypeArticle FROM roominventory.articles as a \n" +
                 "INNER JOIN state as s on a.idState=s.idState\n" +
                 "INNER JOIN typearticle as t on a.idTypeArticle= t.idTypeArticle \n" +
                 "INNER JOIN rooms as r on a.idRoom=r.idRoom\n" +
@@ -96,7 +95,9 @@ public class ArticleRepositoryImpl implements ArticleRepository {
             Room newRoom= new Room();
             newRoom.setIdRoom((Integer) row.get("idRoom"));
             newRoom.setName((String) row.get("nameRoom"));
-            newRoom.setResponsible((String) row.get("responsible"));
+            User user = new User();
+            user.setId((int) row.get("idUser"));
+            newRoom.setUser(user);
             newArticle.setRoom(newRoom);
             TypeArticle newTypeArticle=new TypeArticle();
             newTypeArticle.setIdTypeArticle((Integer) row.get("idTypeArticle"));

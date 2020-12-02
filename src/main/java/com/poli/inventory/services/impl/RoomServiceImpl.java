@@ -15,6 +15,11 @@ public class RoomServiceImpl implements RoomService {
     private RoomRepository roomRepository;
 
     @Override
+    public Room getRoomByUser(String isUser) {
+        return roomRepository.consultRoomByUser(isUser);
+    }
+
+    @Override
     public List<Room> getRooms(String idCampus) {
         return roomRepository.consulRooms(idCampus);
     }

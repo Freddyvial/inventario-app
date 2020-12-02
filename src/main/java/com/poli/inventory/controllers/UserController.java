@@ -5,6 +5,8 @@ import com.poli.inventory.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST})
 public class UserController {
@@ -20,9 +22,11 @@ public class UserController {
 
     @PostMapping(path = "/upDatePassword", consumes = "application/json", produces = "application/json")
     public User upDatePassword(@RequestBody User user) {
-
         return userService.upDatePassword(user);
-
-
     }
+    @GetMapping("/consultUserByCampus")
+    public List<User> consultUserByCampus(String idCampus) {
+        return userService.consultUserByCampus(idCampus);
+    }
+
 }

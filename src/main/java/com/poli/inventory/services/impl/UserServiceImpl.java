@@ -6,6 +6,8 @@ import com.poli.inventory.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -27,6 +29,9 @@ public class UserServiceImpl implements UserService {
         return userRepository.upDatePassword(user);
     }
 
-
+    @Override
+    public List<User> consultUserByCampus(String idCampus) {
+        return userRepository.consultUserByCampus(idCampus);
+    }
 
 }

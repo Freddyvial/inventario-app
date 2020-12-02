@@ -4,6 +4,7 @@ package com.poli.inventory.repositories.impl;
 
 import com.poli.inventory.domain.Campus;
 import com.poli.inventory.domain.Room;
+import com.poli.inventory.domain.User;
 import com.poli.inventory.repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -29,15 +30,27 @@ public class RoomRepositoryImpl implements RoomRepository {
     private JdbcTemplate jdbcTemplate;
 
     @Override
+    public Room consultRoomByUser(String idUser){
+        String sql = "select * from roominventory.rooms where idUser=?";
+        List<Room> rooms = jdbcTemplate.query(sql, new Object[]{idUser}, new BeanPropertyRowMapper(Room.class));
+        return rooms.size() > 0 ? rooms.get(0) : null;
+    }
+
+    @Override
     public List<Room> consulRooms(String idCampus) {
-        String sql = "SELECT * FROM roominventory.rooms WHERE idRoom != 0 AND idCampus=?";
+        String sql = "SELECT r.*,u.userName FROM roominventory.rooms as r \n" +
+                "INNER JOIN users as u on r.idUser = u.idUser\n" +
+                "WHERE r.idRoom != 0 AND r.idCampus=?";
         List<Room> rooms = new ArrayList<>();
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql,idCampus);
         for (Map row : rows) {
             Room newRoom = new Room();
             newRoom.setIdRoom((Integer) row.get("idRoom"));
             newRoom.setName((String) row.get("name"));
-            newRoom.setResponsible((String) row.get("responsible"));
+            User user = new User();
+            user.setId((int) row.get("idUser"));
+            user.setUserName((String) row.get("userName"));
+            newRoom.setUser(user);
             newRoom.setPhoto((byte[]) row.get("photo"));
             Campus campus=new Campus();
             campus.setIdCampus((Integer) row.get("idCampus"));
@@ -63,13 +76,13 @@ public class RoomRepositoryImpl implements RoomRepository {
 
     private Room create(Room room) {
         KeyHolder holder = new GeneratedKeyHolder();
-        String sql = "INSERT INTO roominventory.rooms (name, responsible,photo,idCampus) VALUES (?, ?, ?,?)";
+        String sql = "INSERT INTO roominventory.rooms (name, idUser,photo,idCampus) VALUES (?, ?, ?,?)";
         jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
                 PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
                 ps.setString(1, room.getName());
-                ps.setString(2, room.getResponsible());
+                ps.setInt(2, room.getUser().getId());
                 ps.setBinaryStream(3, getInputStreamImage(room.getPhoto()));
                 ps.setInt(4,room.getCampus().getIdCampus());
                 return ps;
@@ -95,8 +108,8 @@ public class RoomRepositoryImpl implements RoomRepository {
     @Override
     public Room update(Room room) {
         jdbcTemplate.update(
-                "UPDATE rooms SET name=?, responsible=?, photo=? WHERE idRoom=?",
-                room.getName(),room.getResponsible(),room.getPhoto(),room.getIdRoom());
+                "UPDATE rooms SET name=?, idUser=?, photo=? WHERE idRoom=?",
+                room.getName(),room.getUser().getId(),room.getPhoto(),room.getIdRoom());
         return room;
     }
 }

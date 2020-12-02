@@ -10,5 +10,6 @@ public interface RoomRepository {
     Room createRoom(Room room);
     Room checkRoom(String name);
     Room update(Room room);
+    Room consultRoomByUser(String idUser);
 
 }

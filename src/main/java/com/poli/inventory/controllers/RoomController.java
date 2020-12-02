@@ -14,6 +14,11 @@ public class RoomController {
     @Autowired
     private RoomService roomService;
 
+    @GetMapping("/roomByUser")
+    public Room getRoomByUser(String idUser){
+        return roomService.getRoomByUser(idUser);
+    }
+
     @GetMapping("/rooms")
     public List<Room> getArticles(String idCampus){
         return roomService.getRooms(idCampus);

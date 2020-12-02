@@ -34,13 +34,27 @@ public class UserRepositoryImpl implements UserRepository {
         return user;
     }
     @Override
+    public  List<User> consultUserByCampus(String idCampus){
+        String sql = "SELECT u.idUser,u.userName FROM roominventory.users as u\n" +
+                "where idCampus=?";
+        List<User> users=new ArrayList<>();
+        List<Map<String, Object>> rows= jdbcTemplate.queryForList(sql,new Object[] { idCampus});
+        for(Map row:rows){
+        User newUser = new User();
+        newUser.setId((int) row.get("idUser"));
+        newUser.setUserName((String) row.get("userName"));
+        users.add(newUser);
+        }
+        return users;
+    }
+    @Override
     public User consultUser(String userName, String password){
         String sql = "SELECT u.*, r.name as roleName FROM roominventory.users as u inner join roominventory.role as r on u.idRole = r.idRole where u.userName=? and u.password = ?";
         List<User> users=new ArrayList<>();
         List<Map<String, Object>> rows= jdbcTemplate.queryForList(sql ,new Object[] { userName ,password});
         for(Map row:rows){
             User newUser = new User();
-            newUser.setId((int)row.get("idRole"));
+            newUser.setId((int)row.get("idUser"));
             newUser.setUserName((String) row.get("userName"));
 
             Role role=new Role();

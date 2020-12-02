@@ -3,9 +3,9 @@ package com.poli.inventory.domain;
 public class Room {
     private int idRoom;
     private String name;
-    private String responsible;
     private byte[] Photo;
     private Campus campus;
+    private User user;
 
     public Campus getCampus() {
         return campus;
@@ -31,19 +31,19 @@ public class Room {
         this.name = name;
     }
 
-    public String getResponsible() {
-        return responsible;
-    }
-
-    public void setResponsible(String responsible) {
-        this.responsible = responsible;
-    }
-
     public byte[] getPhoto() {
         return Photo;
     }
 
     public void setPhoto(byte[] photo) {
         Photo = photo;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
