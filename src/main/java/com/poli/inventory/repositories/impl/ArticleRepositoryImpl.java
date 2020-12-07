@@ -48,7 +48,7 @@ public class ArticleRepositoryImpl implements ArticleRepository {
             newRoom.setIdRoom((Integer) row.get("idRoom"));
             newRoom.setName((String) row.get("nameRoom"));
             User user = new User();
-            user.setId((int) row.get("idUser"));
+            user.setIdUser((int) row.get("idUser"));
             newRoom.setUser(user);
             newArticle.setRoom(newRoom);
             TypeArticle newTypeArticle=new TypeArticle();
@@ -96,7 +96,7 @@ public class ArticleRepositoryImpl implements ArticleRepository {
             newRoom.setIdRoom((Integer) row.get("idRoom"));
             newRoom.setName((String) row.get("nameRoom"));
             User user = new User();
-            user.setId((int) row.get("idUser"));
+            user.setIdUser((int) row.get("idUser"));
             newRoom.setUser(user);
             newArticle.setRoom(newRoom);
             TypeArticle newTypeArticle=new TypeArticle();

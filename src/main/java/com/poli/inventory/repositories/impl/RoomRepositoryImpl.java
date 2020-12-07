@@ -48,7 +48,7 @@ public class RoomRepositoryImpl implements RoomRepository {
             newRoom.setIdRoom((Integer) row.get("idRoom"));
             newRoom.setName((String) row.get("name"));
             User user = new User();
-            user.setId((int) row.get("idUser"));
+            user.setIdUser((int) row.get("idUser"));
             user.setUserName((String) row.get("userName"));
             newRoom.setUser(user);
             newRoom.setPhoto((byte[]) row.get("photo"));
@@ -82,7 +82,7 @@ public class RoomRepositoryImpl implements RoomRepository {
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
                 PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
                 ps.setString(1, room.getName());
-                ps.setInt(2, room.getUser().getId());
+                ps.setInt(2, room.getUser().getIdUser());
                 ps.setBinaryStream(3, getInputStreamImage(room.getPhoto()));
                 ps.setInt(4,room.getCampus().getIdCampus());
                 return ps;
@@ -109,7 +109,7 @@ public class RoomRepositoryImpl implements RoomRepository {
     public Room update(Room room) {
         jdbcTemplate.update(
                 "UPDATE rooms SET name=?, idUser=?, photo=? WHERE idRoom=?",
-                room.getName(),room.getUser().getId(),room.getPhoto(),room.getIdRoom());
+                room.getName(),room.getUser().getIdUser(),room.getPhoto(),room.getIdRoom());
         return room;
     }
 }

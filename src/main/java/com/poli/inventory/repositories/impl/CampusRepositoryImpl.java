@@ -1,7 +1,6 @@
 package com.poli.inventory.repositories.impl;
 
 import com.poli.inventory.domain.Campus;
-import com.poli.inventory.domain.Room;
 import com.poli.inventory.repositories.CampusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;

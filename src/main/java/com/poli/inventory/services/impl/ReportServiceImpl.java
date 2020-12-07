@@ -24,7 +24,7 @@ public class ReportServiceImpl implements ReportService {
         if (report.getIdReport() == 0) {
             return reportRepository.createReport(report);
         } else {
-            Report campusExist = reportRepository.checkReport(report.getNameReport());
+            Report campusExist = reportRepository.checkReport(report.getDate().toString());
 
             if (campusExist != null) {
                 return reportRepository.createReport(report);

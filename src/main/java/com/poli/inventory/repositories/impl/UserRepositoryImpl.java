@@ -29,8 +29,8 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public User upDatePassword(User user) {
         jdbcTemplate.update(
-                "UPDATE roominventory.users SET password = ? WHERE id = ?",
-                user.getPassWord(), user.getId());
+                "UPDATE roominventory.users SET password = ? WHERE idUser = ?",
+                user.getPassword(), user.getIdUser());
         return user;
     }
     @Override
@@ -41,7 +41,7 @@ public class UserRepositoryImpl implements UserRepository {
         List<Map<String, Object>> rows= jdbcTemplate.queryForList(sql,new Object[] { idCampus});
         for(Map row:rows){
         User newUser = new User();
-        newUser.setId((int) row.get("idUser"));
+        newUser.setIdUser((int) row.get("idUser"));
         newUser.setUserName((String) row.get("userName"));
         users.add(newUser);
         }
@@ -49,42 +49,63 @@ public class UserRepositoryImpl implements UserRepository {
     }
     @Override
     public User consultUser(String userName, String password){
-        String sql = "SELECT u.*, r.name as roleName FROM roominventory.users as u inner join roominventory.role as r on u.idRole = r.idRole where u.userName=? and u.password = ?";
-        List<User> users=new ArrayList<>();
-        List<Map<String, Object>> rows= jdbcTemplate.queryForList(sql ,new Object[] { userName ,password});
-        for(Map row:rows){
-            User newUser = new User();
-            newUser.setId((int)row.get("idUser"));
-            newUser.setUserName((String) row.get("userName"));
-
-            Role role=new Role();
-            role.setIdRole((String.format(row.get("idRole").toString())));
-            role.setName((String) row.get("roleName"));
-            newUser.setRole(role);
-            Campus campus= new Campus();
-            campus.setIdCampus((int) row.get("idCampus"));
-            newUser.setCampus(campus);
-            users.add(newUser);
+        if(password==null){
+            String sql = "SELECT u.*, r.name as roleName FROM roominventory.users as u inner join roominventory.role as r on u.idRole = r.idRole where u.userName=?";
+            List<Map<String, Object>> rows= jdbcTemplate.queryForList(sql ,new Object[] { userName});
+            List<User> users=new ArrayList<>();
+            for(Map row:rows){
+                User newUser = new User();
+                newUser.setIdUser((int)row.get("idUser"));
+                newUser.setUserName((String) row.get("userName"));
+                Role role=new Role();
+                role.setIdRole((String.format(row.get("idRole").toString())));
+                role.setName((String) row.get("roleName"));
+                newUser.setRole(role);
+                Campus campus= new Campus();
+                campus.setIdCampus((int) row.get("idCampus"));
+                newUser.setCampus(campus);
+                users.add(newUser);
+            }
+            return users.size()>0 ? users.get(0):null;
+        }else{
+            String sql = "SELECT u.*, r.name as roleName FROM roominventory.users as u inner join roominventory.role as r on u.idRole = r.idRole where u.userName=? and u.password = ?";
+             List<Map<String, Object>> rows= jdbcTemplate.queryForList(sql ,new Object[] { userName ,password});
+            List<User> users=new ArrayList<>();
+            for(Map row:rows){
+                User newUser = new User();
+                newUser.setIdUser((int)row.get("idUser"));
+                newUser.setUserName((String) row.get("userName"));
+                Role role=new Role();
+                role.setIdRole((String.format(row.get("idRole").toString())));
+                role.setName((String) row.get("roleName"));
+                newUser.setRole(role);
+                Campus campus= new Campus();
+                campus.setIdCampus((int) row.get("idCampus"));
+                newUser.setCampus(campus);
+                users.add(newUser);
+            }
+            return users.size()>0 ? users.get(0):null;
         }
-         return users.size()>0 ? users.get(0):null;
+
     }
     public User createUser(User user) {
         KeyHolder holder = new GeneratedKeyHolder();
-        String sql= "INSERT INTO roominventory.users (userName,passWord,idRole) values(?,?,?)";
+        String sql= "INSERT INTO roominventory.users (userName,passWord,idRole,idCampus) values(?,?,?,?)";
         jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
                 PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
                 ps.setString(1, user.getUserName());
-                ps.setString(2, user.getPassWord());
+                ps.setString(2, user.getPassword());
                 ps.setInt(3, Integer.parseInt(user.getRole().getIdRole()));
+                ps.setInt(4, user.getCampus().getIdCampus());
                 return ps;
             }
         }, holder);
 
         Long key=holder.getKey().longValue();
 
-        user.setId(key.intValue());
+        user.setIdUser(key.intValue());
 
         return user  ;
     }

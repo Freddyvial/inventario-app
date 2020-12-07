@@ -1,5 +1,6 @@
 package com.poli.inventory.controllers;
 
+import com.poli.inventory.domain.Article;
 import com.poli.inventory.domain.Report;
 import com.poli.inventory.services.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +20,9 @@ public class ReportController {
 
 		return reportService.consultReport(idCampus);
 	}
-	@PostMapping(path = "/report", consumes = "application/json", produces = "application/json")
-	public Report sendReport(@RequestBody Report report) throws Exception {
-
+	@PostMapping(path = "/reports", consumes = "application/json", produces = "application/json")
+	public Report createReport(@RequestBody Report report) throws Exception {
 		return reportService.createReport(report);
-
 	}
 
 

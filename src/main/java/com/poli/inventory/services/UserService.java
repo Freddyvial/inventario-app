@@ -8,7 +8,10 @@ import java.util.List;
 public interface UserService {
 
     User consultUser(String userName, String password);
-    User setUser(User user);
+    public
+
+
+    User setUser(User user,String idRole) throws Exception;
     public User upDatePassword(User user);
     List<User> consultUserByCampus(String idCampus);
 }

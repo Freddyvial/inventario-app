@@ -10,8 +10,6 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -36,9 +34,8 @@ public class ReportRepositoryImpl implements ReportRepository {
         for (Map row : rows) {
             Report report=new Report();
             report.setIdReport((int) row.get("idReport"));
-            report.setNameReport((String)row.get("nameReport"));
             User user= new User();
-            user.setId((int)row.get("idUser"));
+            user.setIdUser((int)row.get("idUser"));
             user.setUserName((String)row.get("userName"));
             Campus campus =new Campus();
             campus.setIdCampus((int)row.get("idCampus"));
@@ -72,15 +69,14 @@ public class ReportRepositoryImpl implements ReportRepository {
 
     private Report create(Report report) {
         KeyHolder holder = new GeneratedKeyHolder();
-        String sql = "INSERT INTO roominventory.report (nameReport,idUser,idRoom,idState) VALUES (?, ?, ?,?)";
+        String sql = "INSERT INTO roominventory.report (idUser,idRoom,idState) VALUES (?, ?, ?)";
         jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
                 PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-                ps.setString(1, report.getNameReport());
-                ps.setInt(2, report.getUser().getId());
-                ps.setInt(3, report.getRoom().getIdRoom());
-                ps.setInt(4, report.getState().getId());
+                ps.setInt(1, report.getUser().getIdUser());
+                ps.setInt(2, report.getRoom().getIdRoom());
+                ps.setInt(3, report.getState().getId());
 
                 return ps;
             }
@@ -92,18 +88,18 @@ public class ReportRepositoryImpl implements ReportRepository {
     }
 
     @Override
-    public Report checkReport(String nameReport) {
-        String sql = "select * from roominventory.report where nameReport = ?";
+    public Report checkReport(String date) {
+        String sql = "select * from roominventory.report where date = ?";
 
-        List<Report> reports = jdbcTemplate.query(sql, new Object[]{nameReport}, new BeanPropertyRowMapper(Report.class));
+        List<Report> reports = jdbcTemplate.query(sql, new Object[]{date}, new BeanPropertyRowMapper(Report.class));
         return reports.size() > 0 ? reports.get(0) : null;
     }
 
     @Override
     public Report update(Report report) {
         jdbcTemplate.update(
-                "UPDATE campus SET nameReport=?, idUser=?, idRoom=?, idState WHERE idReport=?",
-                report.getNameReport(),report.getUser().getId(),report.getRoom().getIdRoom(),report.getState().getId(),report.getIdReport());
+                "UPDATE campus SET  idUser=?, idRoom=?, idState WHERE idReport=?",
+                report.getUser().getIdUser(),report.getRoom().getIdRoom(),report.getState().getId(),report.getIdReport());
         return report;
     }
 

@@ -1,18 +1,18 @@
 package com.poli.inventory.domain;
 
 public class User {
-    private int id;
+    private int idUser;
     private String userName;
-    private String passWord;
+    private String password;
     private Role role;
     private Campus campus;
 
-    public int getId() {
-        return id;
+    public int getIdUser() {
+        return idUser;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setIdUser(int idUser) {
+        this.idUser = idUser;
     }
 
     public String getUserName() {
@@ -23,12 +23,12 @@ public class User {
         this.userName = userName;
     }
 
-    public String getPassWord() {
-        return passWord;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPassWord(String passWord) {
-        this.passWord = passWord;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Role getRole() {

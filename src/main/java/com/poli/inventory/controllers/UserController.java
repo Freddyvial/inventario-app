@@ -29,4 +29,8 @@ public class UserController {
         return userService.consultUserByCampus(idCampus);
     }
 
+    @PostMapping(path = "/createUser", consumes = "application/json", produces = "application/json")
+    public User createUser(@RequestBody User user,String idRole) throws Exception {
+        return userService.setUser(user,idRole);
+    }
 }

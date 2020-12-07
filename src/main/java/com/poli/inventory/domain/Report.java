@@ -4,7 +4,6 @@ import java.util.Date;
 
 public class  Report {
     private int idReport;
-    private String nameReport;
     private User user;
     private Room room;
     private State state;
@@ -16,14 +15,6 @@ public class  Report {
 
     public void setIdReport(int idReport) {
         this.idReport = idReport;
-    }
-
-    public String getNameReport() {
-        return nameReport;
-    }
-
-    public void setNameReport(String nameReport) {
-        this.nameReport = nameReport;
     }
 
     public User getUser() {
