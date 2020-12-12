@@ -27,8 +27,8 @@ public class MenuRepositoryImpl implements MenuRepository {
 
     @Override
     public Menu consultMenus(String idRole) {
-        String sql = "SELECT m.*,s.idSubMenu,s.nameSubMenu,s.link FROM roominventory.submenus as s\n" +
-                "INNER JOIN roominventory.menus as m on s.idMenu=m.idMenu\n" +
+        String sql = "SELECT m.*,s.idSubMenu,s.nameSubMenu,s.link FROM u280625412_inventory.submenus as s\n" +
+                "INNER JOIN u280625412_inventory.menus as m on s.idMenu=m.idMenu\n" +
                 "WHERE m.idRole=?";
         List<Menu> menus = new ArrayList<>();
         List<SubMenu> subMenus = new ArrayList<>();

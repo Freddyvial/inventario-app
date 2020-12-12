@@ -29,13 +29,13 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public User upDatePassword(User user) {
         jdbcTemplate.update(
-                "UPDATE roominventory.users SET password = ? WHERE idUser = ?",
+                "UPDATE u280625412_inventory.users SET password = ? WHERE idUser = ?",
                 user.getPassword(), user.getIdUser());
         return user;
     }
     @Override
     public  List<User> consultUserByCampus(String idCampus){
-        String sql = "SELECT u.idUser,u.userName FROM roominventory.users as u\n" +
+        String sql = "SELECT u.idUser,u.userName FROM u280625412_inventory.users as u\n" +
                 "where idCampus=?";
         List<User> users=new ArrayList<>();
         List<Map<String, Object>> rows= jdbcTemplate.queryForList(sql,new Object[] { idCampus});
@@ -50,7 +50,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public User consultUser(String userName, String password){
         if(password==null){
-            String sql = "SELECT u.*, r.name as roleName FROM roominventory.users as u inner join roominventory.role as r on u.idRole = r.idRole where u.userName=?";
+            String sql = "SELECT u.*, r.name as roleName FROM u280625412_inventory.users as u inner join u280625412_inventory.role as r on u.idRole = r.idRole where u.userName=?";
             List<Map<String, Object>> rows= jdbcTemplate.queryForList(sql ,new Object[] { userName});
             List<User> users=new ArrayList<>();
             for(Map row:rows){
@@ -68,7 +68,7 @@ public class UserRepositoryImpl implements UserRepository {
             }
             return users.size()>0 ? users.get(0):null;
         }else{
-            String sql = "SELECT u.*, r.name as roleName FROM roominventory.users as u inner join roominventory.role as r on u.idRole = r.idRole where u.userName=? and u.password = ?";
+            String sql = "SELECT u.*, r.name as roleName FROM u280625412_inventory.users as u inner join u280625412_inventory.role as r on u.idRole = r.idRole where u.userName=? and u.password = ?";
              List<Map<String, Object>> rows= jdbcTemplate.queryForList(sql ,new Object[] { userName ,password});
             List<User> users=new ArrayList<>();
             for(Map row:rows){
@@ -90,7 +90,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
     public User createUser(User user) {
         KeyHolder holder = new GeneratedKeyHolder();
-        String sql= "INSERT INTO roominventory.users (userName,passWord,idRole,idCampus) values(?,?,?,?)";
+        String sql= "INSERT INTO u280625412_inventory.users (userName,passWord,idRole,idCampus) values(?,?,?,?)";
         jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {

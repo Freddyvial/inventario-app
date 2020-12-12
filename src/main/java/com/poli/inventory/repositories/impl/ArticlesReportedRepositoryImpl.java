@@ -27,7 +27,7 @@ public class ArticlesReportedRepositoryImpl implements ArticlesReportedRepositor
 
     @Override
     public List<ArticlesReported> consulArticlesReported(String idReport) {
-        String sql = "SELECT * FROM roominventory.articlesreported WHERE idReport=?;";
+        String sql = "SELECT * FROM u280625412_inventory.articlesreported WHERE idReport=?;";
         List<ArticlesReported> articlesReportedList = new ArrayList<>();
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql,idReport);
         for (Map row : rows) {
@@ -43,7 +43,7 @@ public class ArticlesReportedRepositoryImpl implements ArticlesReportedRepositor
     }
     @Override
     public ArticlesReported create(ArticlesReported articlesReported) {
-        String sql = "INSERT INTO roominventory.articlesreported (idReport,idArticle) VALUES (?, ?)";
+        String sql = "INSERT INTO u280625412_inventory.articlesreported (idReport,idArticle) VALUES (?, ?)";
         jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
@@ -57,7 +57,7 @@ public class ArticlesReportedRepositoryImpl implements ArticlesReportedRepositor
     }
     @Override
     public ArticlesReported checkArticlesReported(ArticlesReported articlesReported) {
-        String sql = "select * from roominventory.articlesreported where idArticle = ? AND idReport=?";
+        String sql = "select * from u280625412_inventory.articlesreported where idArticle = ? AND idReport=?";
 
         List<ArticlesReported> articlesReportedList = jdbcTemplate.query(sql, new Object[]{articlesReported.getReport().getIdReport(),articlesReported.getArticle().getId()}, new BeanPropertyRowMapper(ArticlesReported.class));
         return articlesReportedList.size() > 0 ? articlesReportedList.get(0) : null;

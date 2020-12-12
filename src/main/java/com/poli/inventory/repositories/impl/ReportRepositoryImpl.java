@@ -24,7 +24,7 @@ public class ReportRepositoryImpl implements ReportRepository {
 
     @Override
     public List<Report> consultReport(String idCampus) {
-        String sql = "SELECT r.*,u.userName,u.idRole,u.idCampus,rm.name as nameRoom,s.name as nameState FROM roominventory.report as r\n" +
+        String sql = "SELECT r.*,u.userName,u.idRole,u.idCampus,rm.name as nameRoom,s.name as nameState FROM u280625412_inventory.report as r\n" +
                 "INNER JOIN users as u on r.idUser=u.idUser\n" +
                 "INNER JOIN rooms as rm on r.idRoom=rm.idRoom\n" +
                 "INNER JOIN state as s on r.idState=s.idState\n" +
@@ -69,7 +69,7 @@ public class ReportRepositoryImpl implements ReportRepository {
 
     private Report create(Report report) {
         KeyHolder holder = new GeneratedKeyHolder();
-        String sql = "INSERT INTO roominventory.report (idUser,idRoom,idState) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO u280625412_inventory.report (idUser,idRoom,idState) VALUES (?, ?, ?)";
         jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
@@ -89,7 +89,7 @@ public class ReportRepositoryImpl implements ReportRepository {
 
     @Override
     public Report checkReport(String date) {
-        String sql = "select * from roominventory.report where date = ?";
+        String sql = "select * from u280625412_inventory.report where date = ?";
 
         List<Report> reports = jdbcTemplate.query(sql, new Object[]{date}, new BeanPropertyRowMapper(Report.class));
         return reports.size() > 0 ? reports.get(0) : null;

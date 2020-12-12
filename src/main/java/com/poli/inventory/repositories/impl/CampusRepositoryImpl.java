@@ -26,7 +26,7 @@ public class CampusRepositoryImpl implements CampusRepository {
 
     @Override
     public List<Campus> consultCampus() {
-        String sql = "select * from roominventory.campus";
+        String sql = "select * from u280625412_inventory.campus";
         List<Campus> campuses = jdbcTemplate.query(sql, new BeanPropertyRowMapper(Campus.class));
         return campuses;
     }
@@ -44,7 +44,7 @@ public class CampusRepositoryImpl implements CampusRepository {
 
     private Campus create(Campus campus) {
         KeyHolder holder = new GeneratedKeyHolder();
-        String sql = "INSERT INTO roominventory.campus (name, direction,logo) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO u280625412_inventory.campus (name, direction,logo) VALUES (?, ?, ?)";
         jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
@@ -66,7 +66,7 @@ public class CampusRepositoryImpl implements CampusRepository {
 
     @Override
     public Campus checkCampus(String name) {
-        String sql = "select * from roominventory.campus where name = ?";
+        String sql = "select * from u280625412_inventory.campus where name = ?";
 
         List<Campus> campuses = jdbcTemplate.query(sql, new Object[]{name}, new BeanPropertyRowMapper(Campus.class));
         return campuses.size() > 0 ? campuses.get(0) : null;

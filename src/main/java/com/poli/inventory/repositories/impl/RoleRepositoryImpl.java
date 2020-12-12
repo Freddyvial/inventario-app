@@ -17,7 +17,7 @@ public class RoleRepositoryImpl implements RoleRepository {
 
     @Override
     public List<Role> consultRole() {
-        String sql = "select * from roominventory.role";
+        String sql = "select * from u280625412_inventory.role";
         List<Role> roles = jdbcTemplate.query(sql, new BeanPropertyRowMapper(Role.class));
         return roles;
     }

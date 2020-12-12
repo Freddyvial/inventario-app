@@ -31,14 +31,14 @@ public class RoomRepositoryImpl implements RoomRepository {
 
     @Override
     public Room consultRoomByUser(String idUser){
-        String sql = "select * from roominventory.rooms where idUser=?";
+        String sql = "select * from u280625412_inventory.rooms where idUser=?";
         List<Room> rooms = jdbcTemplate.query(sql, new Object[]{idUser}, new BeanPropertyRowMapper(Room.class));
         return rooms.size() > 0 ? rooms.get(0) : null;
     }
 
     @Override
     public List<Room> consulRooms(String idCampus) {
-        String sql = "SELECT r.*,u.userName FROM roominventory.rooms as r \n" +
+        String sql = "SELECT r.*,u.userName FROM u280625412_inventory.rooms as r \n" +
                 "INNER JOIN users as u on r.idUser = u.idUser\n" +
                 "WHERE r.idRoom != 0 AND r.idCampus=?";
         List<Room> rooms = new ArrayList<>();
@@ -76,7 +76,7 @@ public class RoomRepositoryImpl implements RoomRepository {
 
     private Room create(Room room) {
         KeyHolder holder = new GeneratedKeyHolder();
-        String sql = "INSERT INTO roominventory.rooms (name, idUser,photo,idCampus) VALUES (?, ?, ?,?)";
+        String sql = "INSERT INTO u280625412_inventory.rooms (name, idUser,photo,idCampus) VALUES (?, ?, ?,?)";
         jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
@@ -99,7 +99,7 @@ public class RoomRepositoryImpl implements RoomRepository {
 
     @Override
     public Room checkRoom(String name) {
-        String sql = "select * from roominventory.rooms where name = ?";
+        String sql = "select * from u280625412_inventory.rooms where name = ?";
 
         List<Room> rooms = jdbcTemplate.query(sql, new Object[]{name}, new BeanPropertyRowMapper(Room.class));
         return rooms.size() > 0 ? rooms.get(0) : null;

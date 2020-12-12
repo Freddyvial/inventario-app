@@ -25,7 +25,7 @@ public class MonitorModelRepositoryImpl implements MonitorModelRepository {
 
     @Override
     public List<MonitorModel> consulModelByMonitor(String idMonitor) {
-        String sql = "SELECT * FROM roominventory.monitormodel WHERE idMonitor=?";
+        String sql = "SELECT * FROM u280625412_inventory.monitormodel WHERE idMonitor=?";
         List<MonitorModel> monitorModels = new ArrayList<>();
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql,idMonitor);
         for (Map row : rows) {
@@ -41,7 +41,7 @@ public class MonitorModelRepositoryImpl implements MonitorModelRepository {
     }
     @Override
     public MonitorModel create(MonitorModel monitorModel) {
-        String sql = "INSERT INTO roominventory.monitormodel (idMonitor,idModel) VALUES (?, ?)";
+        String sql = "INSERT INTO u280625412_inventory.monitormodel (idMonitor,idModel) VALUES (?, ?)";
         jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
@@ -55,7 +55,7 @@ public class MonitorModelRepositoryImpl implements MonitorModelRepository {
     }
     @Override
     public MonitorModel checkMonitorModel(String idMonitor,String idModel) {
-        String sql = "select * from roominventory.report where idMonitor = ? AND idModel=?";
+        String sql = "select * from u280625412_inventory.report where idMonitor = ? AND idModel=?";
 
         List<MonitorModel> monitorModels = jdbcTemplate.query(sql, new Object[]{idMonitor,idModel}, new BeanPropertyRowMapper(MonitorModel.class));
         return monitorModels.size() > 0 ? monitorModels.get(0) : null;

@@ -27,7 +27,7 @@ public class ArticleRepositoryImpl implements ArticleRepository {
 
     @Override
     public List<Article> getArticles(String idCampus) {
-        String sql = "SELECT a.*,r.name as nameRoom,r.idUser,s.name as nameState,t.name as nameTypeArticle FROM roominventory.articles as a \n" +
+        String sql = "SELECT a.*,r.name as nameRoom,r.idUser,s.name as nameState,t.name as nameTypeArticle FROM u280625412_inventory.articles as a \n" +
                 "INNER JOIN state as s on a.idState=s.idState\n" +
                 "INNER JOIN typearticle as t on a.idTypeArticle= t.idTypeArticle \n" +
                 "INNER JOIN rooms as r on a.idRoom=r.idRoom\n" +
@@ -62,7 +62,7 @@ public class ArticleRepositoryImpl implements ArticleRepository {
     }
     @Override
     public List<TypeArticle> getTypeArticle() {
-        String sql = "SELECT * FROM roominventory.typearticle";
+        String sql = "SELECT * FROM u280625412_inventory.typearticle";
         List<TypeArticle> typeArticles = new ArrayList<>();
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
         for (Map row : rows) {
@@ -75,7 +75,7 @@ public class ArticleRepositoryImpl implements ArticleRepository {
     }
     @Override
     public List<Article> consulArticleByRoom(Integer idRoom) {
-        String sql = "SELECT a.*,r.name as nameRoom,r.idUser ,s.name as nameState,t.name as nameTypeArticle FROM roominventory.articles as a \n" +
+        String sql = "SELECT a.*,r.name as nameRoom,r.idUser ,s.name as nameState,t.name as nameTypeArticle FROM u280625412_inventory.articles as a \n" +
                 "INNER JOIN state as s on a.idState=s.idState\n" +
                 "INNER JOIN typearticle as t on a.idTypeArticle= t.idTypeArticle \n" +
                 "INNER JOIN rooms as r on a.idRoom=r.idRoom\n" +
@@ -122,7 +122,7 @@ public class ArticleRepositoryImpl implements ArticleRepository {
 
     private Article create(Article article) {
         KeyHolder holder = new GeneratedKeyHolder();
-        String sql = "INSERT INTO roominventory.articles (name, serial, idState,photo,idTypeArticle,idCampus) VALUES (?, ?, ?, ?,?,?)";
+        String sql = "INSERT INTO u280625412_inventory.articles (name, serial, idState,photo,idTypeArticle,idCampus) VALUES (?, ?, ?, ?,?,?)";
         jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
@@ -147,7 +147,7 @@ public class ArticleRepositoryImpl implements ArticleRepository {
 
     @Override
     public Article checkArticle(String serial) {
-        String sql = "select * from roominventory.articles where serial = ?";
+        String sql = "select * from u280625412_inventory.articles where serial = ?";
 
         List<Article> articles = jdbcTemplate.query(sql, new Object[]{serial}, new BeanPropertyRowMapper(Article.class));
         return articles.size() > 0 ? articles.get(0) : null;
