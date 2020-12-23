@@ -14,4 +14,5 @@ public interface ReportRepository {
     Report createReport(Report report);
     Report checkReport(String name);
     Report update(Report report);
+    List<Report> consultGeneralReport(String idCampus);
 }

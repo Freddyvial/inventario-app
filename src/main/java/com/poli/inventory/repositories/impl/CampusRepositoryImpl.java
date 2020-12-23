@@ -75,7 +75,7 @@ public class CampusRepositoryImpl implements CampusRepository {
     @Override
     public Campus update(Campus campus) {
         jdbcTemplate.update(
-                "UPDATE campus SET name=?, direction=?, logo=? WHERE idCampus=?",
+                "UPDATE u280625412_inventory.campus SET name=?, direction=?, logo=? WHERE idCampus=?",
                 campus.getName(),campus.getDirection(),campus.getLogo(),campus.getIdCampus());
         return campus;
     }

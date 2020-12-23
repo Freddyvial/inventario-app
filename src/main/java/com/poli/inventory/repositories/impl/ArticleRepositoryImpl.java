@@ -28,9 +28,9 @@ public class ArticleRepositoryImpl implements ArticleRepository {
     @Override
     public List<Article> getArticles(String idCampus) {
         String sql = "SELECT a.*,r.name as nameRoom,r.idUser,s.name as nameState,t.name as nameTypeArticle FROM u280625412_inventory.articles as a \n" +
-                "INNER JOIN state as s on a.idState=s.idState\n" +
-                "INNER JOIN typearticle as t on a.idTypeArticle= t.idTypeArticle \n" +
-                "INNER JOIN rooms as r on a.idRoom=r.idRoom\n" +
+                "INNER JOIN u280625412_inventory.state as s on a.idState=s.idState\n" +
+                "INNER JOIN u280625412_inventory.typearticle as t on a.idTypeArticle= t.idTypeArticle \n" +
+                "INNER JOIN u280625412_inventory.rooms as r on a.idRoom=r.idRoom\n" +
                 "WHERE a.idState=3 AND a.idCampus=?";
         List<Article> articles = new ArrayList<>();
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql,idCampus);
@@ -55,7 +55,9 @@ public class ArticleRepositoryImpl implements ArticleRepository {
             newTypeArticle.setIdTypeArticle((Integer) row.get("idTypeArticle"));
             newTypeArticle.setName((String) row.get("nameTypeArticle"));
             newArticle.setTypeArticle(newTypeArticle);
-
+            Campus campus=new Campus();
+            campus.setIdCampus((int) row.get("idCampus"));
+            newArticle.setCampus(campus);
             articles.add(newArticle);
         }
         return articles;
@@ -76,9 +78,9 @@ public class ArticleRepositoryImpl implements ArticleRepository {
     @Override
     public List<Article> consulArticleByRoom(Integer idRoom) {
         String sql = "SELECT a.*,r.name as nameRoom,r.idUser ,s.name as nameState,t.name as nameTypeArticle FROM u280625412_inventory.articles as a \n" +
-                "INNER JOIN state as s on a.idState=s.idState\n" +
-                "INNER JOIN typearticle as t on a.idTypeArticle= t.idTypeArticle \n" +
-                "INNER JOIN rooms as r on a.idRoom=r.idRoom\n" +
+                "INNER JOIN u280625412_inventory.state as s on a.idState=s.idState\n" +
+                "INNER JOIN u280625412_inventory.typearticle as t on a.idTypeArticle= t.idTypeArticle \n" +
+                "INNER JOIN u280625412_inventory.rooms as r on a.idRoom=r.idRoom\n" +
                 "WHERE a.idRoom=?";
         List<Article> articles = new ArrayList<>();
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql,idRoom);
@@ -156,21 +158,21 @@ public class ArticleRepositoryImpl implements ArticleRepository {
     @Override
     public Article update(Article article) {
         jdbcTemplate.update(
-                "UPDATE articles SET name=?, serial=?, idState=?, photo=? WHERE idArticle=?",
+                "UPDATE u280625412_inventory.articles SET name=?, serial=?, idState=?, photo=? WHERE idArticle=?",
                 article.getName(),article.getSerial(),article.getState().getId(),article.getPhoto(),article.getId());
         return article;
     }
     @Override
     public Article changeStateArticle(Article article) {
         jdbcTemplate.update(
-                "UPDATE articles SET idState=? WHERE idArticle=?",
+                "UPDATE u280625412_inventory.articles SET idState=? WHERE idArticle=?",
                 article.getState().getId(),article.getId());
         return article;
     }
     @Override
     public Article changeIdRoomArticle(Article article) {
         jdbcTemplate.update(
-                "UPDATE articles SET idRoom=? WHERE idArticle=?",
+                "UPDATE u280625412_inventory.articles SET idRoom=? WHERE idArticle=?",
                article.getRoom().getIdRoom(),article.getId());
         return article;
     }

@@ -39,7 +39,7 @@ public class RoomRepositoryImpl implements RoomRepository {
     @Override
     public List<Room> consulRooms(String idCampus) {
         String sql = "SELECT r.*,u.userName FROM u280625412_inventory.rooms as r \n" +
-                "INNER JOIN users as u on r.idUser = u.idUser\n" +
+                "INNER JOIN u280625412_inventory.users as u on r.idUser = u.idUser\n" +
                 "WHERE r.idRoom != 0 AND r.idCampus=?";
         List<Room> rooms = new ArrayList<>();
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql,idCampus);
@@ -108,7 +108,7 @@ public class RoomRepositoryImpl implements RoomRepository {
     @Override
     public Room update(Room room) {
         jdbcTemplate.update(
-                "UPDATE rooms SET name=?, idUser=?, photo=? WHERE idRoom=?",
+                "UPDATE u280625412_inventory.rooms SET name=?, idUser=?, photo=? WHERE idRoom=?",
                 room.getName(),room.getUser().getIdUser(),room.getPhoto(),room.getIdRoom());
         return room;
     }

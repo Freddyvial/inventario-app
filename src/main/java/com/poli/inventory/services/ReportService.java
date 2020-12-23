@@ -9,4 +9,5 @@ public interface ReportService {
 
     List<Report> consultReport(String idCampus);
     Report createReport(Report report) throws Exception;
+
 }
