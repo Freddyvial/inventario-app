@@ -53,5 +53,17 @@ public class ArticleServiceImpl implements ArticleService {
             }
         }
 
+
+    }
+    @Override
+    public  List<Article> articlesForChanges(List<TypeArticle> typeArticleList, String idCampus){
+        List<Article> articles = null;
+        String idRoom="0";
+        for (int i = 0; i < typeArticleList.size(); i++) {
+            Article article= articleRepository.scannerArticle(String.valueOf(typeArticleList.get(i).getIdTypeArticle()),idCampus,idRoom);
+            articles.add(article);
+            idRoom= String.valueOf(article.getRoom().getIdRoom());
+        }
+        return articles;
     }
 }

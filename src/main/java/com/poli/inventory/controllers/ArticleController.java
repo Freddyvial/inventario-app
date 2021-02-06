@@ -43,4 +43,8 @@ public class ArticleController {
     public Article changeIdRoomArticle(@RequestBody Article article) throws Exception {
         return articleService.changeIdRoomArticle(article);
     }
+    @PostMapping(path = "/listArticlesChange", consumes = "application/json", produces = "application/json")
+    public List<Article> changeRoomArticle(@RequestBody List<TypeArticle> typeArticle,String idCampus) throws Exception {
+        return articleService.articlesForChanges(typeArticle,idCampus);
+    }
 }

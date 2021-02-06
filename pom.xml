@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.poli</groupId>
-	<artifactId>covid19</artifactId>
+	<artifactId>inventory</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>covid19</name>
-	<description>PPI Clovid-19</description>
+	<name>inventory</name>
+	<description>App inventory</description>
 
 	<properties>
 		<java.version>1.8</java.version>
@@ -26,6 +26,11 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.jasperreports</groupId>
+			<artifactId>jasperreports</artifactId>
+			<version>6.9.0</version>
 		</dependency>
 
 		<dependency>

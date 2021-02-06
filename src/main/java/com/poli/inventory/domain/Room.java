@@ -6,6 +6,7 @@ public class Room {
     private byte[] Photo;
     private Campus campus;
     private User user;
+    private State state;
 
     public Campus getCampus() {
         return campus;
@@ -45,5 +46,13 @@ public class Room {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public State getState() {
+        return state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
     }
 }

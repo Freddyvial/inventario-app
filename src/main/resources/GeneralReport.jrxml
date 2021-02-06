@@ -9,15 +9,15 @@
     </field>
     <field name="idRoom" class="java.lang.Integer">
     </field>
-    <field name="photoRoom" class="java.lang.Byte[]">
+    <field name="photoRoom" class="byte[]">
     </field>
     <field name="userName" class="java.lang.String">
     </field>
     <field name="serialArticle" class="java.lang.String">
     </field>
-    <field name="photoArticle" class="java.lang.Byte[]">
+    <field name="photoArticle" class="byte[]">
     </field>
-    <field name="dateArticle" class="java.lang.String">
+    <field name="dateArticle" class="java.util.Date">
     </field>
     <group name="Group1">
         <groupExpression><![CDATA[$F{nameRoom}]]></groupExpression>

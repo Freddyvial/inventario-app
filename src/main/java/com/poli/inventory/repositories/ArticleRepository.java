@@ -16,4 +16,5 @@ public interface ArticleRepository {
     Article changeIdRoomArticle(Article article);
     List<Article> consulArticleByRoom(Integer idRoom);
     List<TypeArticle> getTypeArticle();
+    Article scannerArticle(String idTypeArticle, String idCampus, String idRoom);
 }

@@ -13,4 +13,5 @@ public interface ArticleService {
     Article changeIdRoomArticle(Article article);
     List<Article> consulArticleByRoom(Integer idRoom);
     List<TypeArticle> getTypeArticle();
+    List<Article> articlesForChanges(List<TypeArticle> typeArticleList, String idCampus);
 }

@@ -29,3 +29,6 @@ build/
 
 ### VS Code ###
 .vscode/
+/src/main/java/com/poli/inventory/domain/GeneralReport.java
+/s.txt
+/sh.bat
