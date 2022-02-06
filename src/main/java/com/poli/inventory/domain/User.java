@@ -5,7 +5,6 @@ public class User {
     private String userName;
     private String password;
     private Role role;
-    private Campus campus;
 
     public int getIdUser() {
         return idUser;
@@ -39,11 +38,5 @@ public class User {
         this.role = role;
     }
 
-    public Campus getCampus() {
-        return campus;
-    }
 
-    public void setCampus(Campus campus) {
-        this.campus = campus;
-    }
 }
